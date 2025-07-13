@@ -68,7 +68,7 @@ const Login = () => {
         }
       } else if (res?.payload?.status_code === 400) {
         setErrorMessage(res?.payload?.message);
-      } else if (res?.payload?.status === 422) {
+      } else if (res?.payload?.response?.data?.status_code === 422) {
         setErrorMessage(
           res?.payload?.response?.data?.data?.[0]?.message
             ? res?.payload?.response?.data?.data?.[0]?.message

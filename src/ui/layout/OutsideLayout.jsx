@@ -9,9 +9,9 @@ const OutsideLayout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { subdomain } = useSelector((state) => state?.auth);
-  useEffect(() => {
-    dispatch(getSubdomain());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getSubdomain());
+  // }, [dispatch]);
 
   console.log("SubDomain: ", subdomain?.data?.[0]?.server_domain);
   // localStorage.setItem("subDomain", subdomain?.data?.[0]?.server_domain);
@@ -33,12 +33,12 @@ const OutsideLayout = () => {
   //   navigate("/pageNotFound");
   // }
 
-  const token = sessionStorage.getItem("chess_admin_token");
+  const token = sessionStorage.getItem("earno_admin_token");
   const parseToken = token ? JSON.parse(token)?.token : null;
   const nevigate = useNavigate();
   useEffect(() => {
     if (parseToken !== null || parseToken !== null) {
-      nevigate("/manage-coaches");
+      nevigate("/dashboard");
     }
   }, []);
 
