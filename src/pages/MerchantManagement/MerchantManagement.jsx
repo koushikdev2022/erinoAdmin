@@ -160,7 +160,7 @@ const MerchantManagement = () => {
           Register New Merchant
         </Modal.Header>
         <Modal.Body>
-          <div className="space-y-4 h-[500px] overflow-y-scroll">
+          <div className="space-y-4 h-[700px] overflow-y-scroll">
             <div>
               <div className="mb-1 block">
                 <Label value="Merchant Name *" />
@@ -290,7 +290,7 @@ const MerchantManagement = () => {
       >
         <Modal.Header className="text-[#435971]">Merchant Details</Modal.Header>
         <Modal.Body>
-          <div className="space-y-4 h-[500px] overflow-y-scroll">
+          <div className="space-y-4 h-[700px] overflow-y-scroll">
             <h3 className="text-base text-[#191919] font-bold mb-1">Details</h3>
             <div className="flex gap-4">
               <div className="text-sm text-[#697A8D] font-medium mb-2 w-6/12">
@@ -518,7 +518,7 @@ const MerchantManagement = () => {
       >
         <Modal.Header className="text-[#435971]">Merchant Details</Modal.Header>
         <Modal.Body>
-          <div className="space-y-4 h-[500px] overflow-y-scroll">
+          <div className="space-y-4 h-[700px] overflow-y-scroll">
             <h3 className="text-base text-[#191919] font-bold mb-1">Details</h3>
             <div className="flex gap-4">
               <div className="w-6/12">

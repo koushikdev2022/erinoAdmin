@@ -137,7 +137,7 @@ const CustomerManagement = () => {
       >
         <Modal.Header className="text-[#435971]">Customer Details</Modal.Header>
         <Modal.Body>
-          <div className="space-y-4 h-[500px] overflow-y-scroll">
+          <div className="space-y-4 h-[700px] overflow-y-scroll">
             <h3 className="text-base text-[#191919] font-bold mb-1">Details</h3>
             <div className="flex gap-4">
               <div className="text-sm text-[#697A8D] font-medium mb-2 w-6/12">
@@ -410,7 +410,7 @@ const CustomerManagement = () => {
             onClick={handleManageCustomerDetails}
             className="bg-[#686AF8] hover:bg-black"
           >
-            Manage Merchant
+            Manage Customer
           </Button>
         </Modal.Footer>
       </Modal>
@@ -422,7 +422,7 @@ const CustomerManagement = () => {
       >
         <Modal.Header className="text-[#435971]">Customer Details</Modal.Header>
         <Modal.Body>
-          <div className="space-y-4 h-[500px] overflow-y-scroll">
+          <div className="space-y-4 h-[700px] overflow-y-scroll">
             <h3 className="text-base text-[#191919] font-bold mb-1">Details</h3>
             <div className="w-full">
               <div className="w-full">
