@@ -87,7 +87,7 @@ const Login = () => {
                 <img
                   src={loginLogo}
                   alt="loginLogo"
-                  className="inline-block w-5/12"
+                  className="inline-block w-5/12 "
                 />
               </div>
               <h1 className="text-left font-semibold text-[38px] leading-[45px] text-black pb-4">
