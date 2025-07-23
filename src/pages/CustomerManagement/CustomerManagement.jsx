@@ -756,23 +756,30 @@ import { CgAdd } from "react-icons/cg";
 import { HiOutlineMail } from "react-icons/hi";
 import { FiPhoneCall } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { getCustomer } from "../../Reducer/CustomerSlice";
+import { getCustomer, getCustomerDetails } from "../../Reducer/CustomerSlice";
 import CustomerDetalisModal from "./CustomerDetalisModal";
+import ManageCustomerDetailsModal from "./ManageCustomerDetailsModal";
+import DeleModal from "./DeleModal";
 
 
 const CustomerManagement = () => {
   const [openCustomerDetailsModal, setOpenCustomerDetailsModal] = useState(false);
   const [openManageCustomerDetailsModal, setOpenManageCustomerDetailsModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const[custId,setCustId]=useState()
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [openDeleteModal,setOpenDeleteModal]=useState(false)
+
 
   const dispatch = useDispatch();
-  const { customerLists,loading,error } = useSelector((state) => state?.coustomers); // Fixed typo: coustomers -> customers
+  const { customerLists,loading,error,singleCustomer } = useSelector((state) => state?.coustomers); // Fixed typo: coustomers -> customers
 
   useEffect(() => {
     dispatch(getCustomer({ page: currentPage, limit: pageSize }));
   }, [dispatch, currentPage, pageSize]);
+
+
 
   const navigate = useNavigate();
 
@@ -856,8 +863,7 @@ const CustomerManagement = () => {
       field: "actions",
       cellRenderer: (params) => (
         <>
-        {console.log(params.data)
-        }
+    
         <Button
           onClick={() => handleCustomerDetails(params?.data)}
           className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
@@ -871,8 +877,10 @@ const CustomerManagement = () => {
   ]);
 
   const handleCustomerDetails = (customerData) => {
+    dispatch(getCustomerDetails(customerData?.id))
     setSelectedCustomer(customerData);
     setOpenCustomerDetailsModal(true);
+    setCustId(customerData?.id)
   };
 
   const handleManageCustomerDetails = () => {
@@ -939,113 +947,40 @@ const CustomerManagement = () => {
       </div>
 
       {/* Customer Details modal start here */}
-    <CustomerDetalisModal
+      {
+        openCustomerDetailsModal&&(
+           <CustomerDetalisModal
     openCustomerDetailsModal={openCustomerDetailsModal}
     setOpenCustomerDetailsModal={setOpenCustomerDetailsModal}
+    setOpenManageCustomerDetailsModal={setOpenManageCustomerDetailsModal}
     selectedCustomer={selectedCustomer}
     />
+        )
+      }
+   
       {/* Customer Details modal ends here */}
 
       {/* Manage Customer Details modal start here */}
-      {/* <Modal
-        show={openManageCustomerDetailsModal}
-        onClose={() => setOpenManageCustomerDetailsModal(false)}
-      >
-        <Modal.Header className="text-[#435971]">Manage Customer</Modal.Header>
-        <Modal.Body>
-          <div className="space-y-4 h-[700px] overflow-y-scroll">
-            <h3 className="text-base text-[#191919] font-bold mb-1">Edit Details</h3>
-            <div className="w-full">
-              <div className="w-full">
-                <div className="mb-1 block">
-                  <Label value="Customer Name" />
-                </div>
-                <TextInput 
-                  type="text" 
-                  defaultValue={selectedCustomer?.originalData?.full_name || ''} 
-                  required 
-                />
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="w-6/12">
-                <div className="mb-1 block">
-                  <Label value="Phone Number" />
-                </div>
-                <TextInput
-                  type="text"
-                  defaultValue={selectedCustomer?.originalData?.mobile || ''}
-                  required
-                />
-              </div>
-              <div className="w-6/12">
-                <div className="mb-1 block">
-                  <Label value="Status" />
-                </div>
-                <Select defaultValue={selectedCustomer?.originalData?.status || 1}>
-                  <option value={1}>Active</option>
-                  <option value={0}>Inactive</option>
-                </Select>
-              </div>
-            </div>
+      {openManageCustomerDetailsModal&&(
+<ManageCustomerDetailsModal
+openManageCustomerDetailsModal={openManageCustomerDetailsModal}
+setOpenManageCustomerDetailsModal={setOpenManageCustomerDetailsModal}
+selectedCustomer={singleCustomer}
+ setOpenDeleteModal={setOpenDeleteModal}
 
-            <h3 className="text-base text-[#191919] font-bold mb-1">
-              Wallet Information
-            </h3>
-            <div className="flex gap-4">
-              <div className="text-sm text-[#697A8D] font-medium mb-2 w-6/12">
-                Current Balance
-              </div>
-              <div className="text-sm text-[#2A2A3C] font-medium mb-2 w-6/12">
-                ₹ {selectedCustomer?.originalData?.wallet?.balance || '0'}
-              </div>
-            </div>
-
-            <h3 className="text-base text-[#191919] font-bold mb-1">
-              Points Information
-            </h3>
-            <div className="flex gap-4">
-              <div className="text-sm text-[#697A8D] font-medium mb-2 w-6/12">
-                Total Points
-              </div>
-              <div className="text-sm text-[#2A2A3C] font-medium mb-2 w-6/12">
-                {selectedCustomer?.originalData?.promoCoins?.total_points || 0} pts
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="text-sm text-[#697A8D] font-medium mb-2 w-6/12">
-                Valid Points
-              </div>
-              <div className="text-sm text-[#2A2A3C] font-medium mb-2 w-6/12">
-                {selectedCustomer?.originalData?.promoCoins?.valid_points || 0} pts
-              </div>
-            </div>
-
-            <div className="mb-0 block">
-              <div className="flex justify-end gap-2">
-                <button className="bg-white text-gray-700 hover:bg-[#9b1c1c] hover:text-white border border-gray-300 rounded-md p-2">
-                  <HiOutlineMail />
-                </button>
-                <button className="bg-white text-gray-700 hover:bg-[#9b1c1c] hover:text-white border border-gray-300 rounded-md p-2">
-                  <FiPhoneCall />
-                </button>
-                <button className="bg-[#F85656] hover:bg-black text-xs leading-[30px] rounded-md text-white font-normal px-4">
-                  Delete Customer
-                </button>
-              </div>
-            </div>
-          </div>
-        </Modal.Body>
-        <Modal.Footer className="flex justify-end">
-          <Button
-            className="bg-white text-gray-700 hover:bg-[#9b1c1c] hover:text-white border border-gray-300"
-            onClick={() => setOpenManageCustomerDetailsModal(false)}
-          >
-            Cancel
-          </Button>
-          <Button className="bg-[#686AF8] hover:bg-black">Save & Update</Button>
-        </Modal.Footer>
-      </Modal> */}
+/>
+      )}
+      
+  {
+    openDeleteModal&&(
+      <DeleModal
+      openDeleteModal={openDeleteModal}
+      setOpenDeleteModal={setOpenDeleteModal}
+      selectedCustomer={singleCustomer}
+      setOpenManageCustomerDetailsModal={setOpenManageCustomerDetailsModal}
+      />
+    )
+  }
       {/* Manage Customer Details modal ends here */}
     </div>
   );

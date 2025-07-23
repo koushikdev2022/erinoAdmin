@@ -22,7 +22,6 @@ export const getCustomer=createAsyncThunk(
 export const getCustomerDetails=createAsyncThunk(
     'getCustomerDetails',
       async (user_input, { rejectWithValue }) => {
-console.log("user_input",user_input)
 
         try {
             const response = await api.get(`/admin/customer/${user_input}`);
@@ -37,12 +36,54 @@ console.log("user_input",user_input)
         }
     }
 )
+
+export const updateCustomerDetails=createAsyncThunk(
+    'updateCustomerDetails',
+      async (user_input, { rejectWithValue }) => {
+
+        try {
+            const response = await api.put(`/admin/customer/update-customer`,user_input);
+            if (response?.data?.status_code === 200) {
+                return response.data;
+            } else {
+                return rejectWithValue(response.data);
+            }
+        } catch (err) {
+            // let errors = errorHandler(err);
+            return rejectWithValue(err);
+        }
+    }
+)
+
+export const deleteCustomerDetails=createAsyncThunk(
+    'deleteCustomerDetails',
+      async (user_input, { rejectWithValue }) => {
+
+        try {
+            const response = await api.delete(`/admin/customer/delete-customer`,{data:user_input});
+            if (response?.data?.status_code === 200) {
+                return response.data;
+            } else {
+                return rejectWithValue(response.data);
+            }
+        } catch (err) {
+            // let errors = errorHandler(err);
+            return rejectWithValue(err);
+        }
+    }
+)
+
+
+
+
 const initialState={
     loading:false,
     customerLists:[],
     error:false,
     singleCustomer:{},
-    errorSingle:false
+    errorSingle:false,
+    updateCusteData:{},
+    delCust:{}
 }
 
 const CustomerSlice=createSlice(
@@ -75,6 +116,30 @@ const CustomerSlice=createSlice(
             .addCase(getCustomerDetails.rejected,(state,{payload})=>{
                 state.loading=false
                 state.errorSingle=payload
+            })
+            .addCase(updateCustomerDetails.pending,(state)=>{
+                state.loading=true
+            })
+            .addCase(updateCustomerDetails.fulfilled,(state,{payload})=>{
+                state.loading=false
+                state.updateCusteData=payload
+                state.error=false
+            })
+            .addCase(updateCustomerDetails.rejected,(state,{payload})=>{
+                state.loading=false
+                state.error=payload
+            })
+            .addCase(deleteCustomerDetails.pending,(state)=>{
+                state.loading=true
+            })
+            .addCase(deleteCustomerDetails.fulfilled,(state,{payload})=>{
+                state.loading=false
+                state.delCust=payload
+                state.error=false
+            })
+            .addCase(deleteCustomerDetails.rejected,(state,{payload})=>{
+                state.loading=false
+                state.error=payload
             })
         }
         

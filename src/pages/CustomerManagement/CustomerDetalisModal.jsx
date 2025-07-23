@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { getCustomerDetails } from "../../Reducer/CustomerSlice";
 
 const CustomerDetalisModal=({ openCustomerDetailsModal,
-    setOpenCustomerDetailsModal,selectedCustomer})=>{
+    setOpenCustomerDetailsModal,selectedCustomer,setOpenManageCustomerDetailsModal})=>{
         const{singleCustomer}=useSelector((state)=>state?.coustomers)
         const dispatch=useDispatch()
 
@@ -13,8 +13,11 @@ const CustomerDetalisModal=({ openCustomerDetailsModal,
 // dispatch(getCustomerDetails(selectedCustomer))
 // },[])
         
-console.log("singleCustomer",selectedCustomer);
 
+  const handleManageCustomerDetails = () => {
+    setOpenManageCustomerDetailsModal(true);
+    setOpenCustomerDetailsModal(false);
+  };
     return(
     <>
       <Modal
@@ -169,7 +172,7 @@ console.log("singleCustomer",selectedCustomer);
             Cancel
           </Button>
           <Button
-            // onClick={handleManageCustomerDetails}
+             onClick={()=>handleManageCustomerDetails()}
             className="bg-[#686AF8] hover:bg-black"
           >
             Manage Customer
