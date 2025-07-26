@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { FaCalendarDays, FaUsers } from "react-icons/fa6";
 import { gCurve, oCurve, rCurve } from "../assets/images/images";
@@ -124,8 +124,20 @@ const dataAdminWalletBalance = [
 ];
 
 import { Select } from "flowbite-react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getdashBoardData } from "../Reducer/DashboardSliceNew";
+import AdminWalletBalance from "./OrderStatus/AdminWalletBalance";
+import CustVendorGraph from "./OrderStatus/CustVendorGraph"
 
 const DashboardCardNew = () => {
+  const {dashData}=useSelector((state)=>state?.dashNew)
+  const dispatch=useDispatch()
+  useEffect(()=>{
+dispatch(getdashBoardData())
+  },[])
+  console.log("dashData",dashData);
+  
   return (
     <div>
       <div className="grid grid-cols-4 gap-6 mb-6">
@@ -136,7 +148,7 @@ const DashboardCardNew = () => {
                 Total Customers
               </p>
               <h3 className="text-[#202224] text-[24px] leading-[32px] font-medium pb-2">
-                40,689
+                {dashData?.data?.valid_customer}
               </h3>
             </div>
             <div className="bg-[#E0E1FF] rounded-[6px] w-[56px] h-[56px] flex justify-center items-center">
@@ -157,7 +169,7 @@ const DashboardCardNew = () => {
                 Total Merchants
               </p>
               <h3 className="text-[#202224] text-[24px] leading-[32px] font-medium pb-2">
-                40,689
+                {dashData?.data?.valid_vendor}
               </h3>
             </div>
             <div className="bg-[#FFF5DF] rounded-[6px] w-[56px] h-[56px] flex justify-center items-center">
@@ -215,75 +227,9 @@ const DashboardCardNew = () => {
         </div>
       </div>
 
-      <div className="mb-6 flex gap-6">
-        <div className="bg-white rounded-xl px-4 py-4 w-8/12">
-          <div className="flex justify-between items-center mb-8">
-            <h3 className="text-xl text-[#566A7F] font-medium">
-              Admin Wallet Balance
-            </h3>
-            <Select id="countries" required>
-              <option>This Month</option>
-              <option>This Year</option>
-            </Select>
-          </div>
-          <div className="h-96">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                width={500}
-                height={300}
-                data={dataAdminWalletBalance}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="Customers"
-                  stroke="#8884d8"
-                  strokeDasharray="5 5"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="Vendor"
-                  stroke="#82ca9d"
-                  strokeDasharray="3 4 5 2"
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-        <div className="bg-white rounded-xl px-4 py-4 w-4/12">
-          <div className="flex justify-between items-center mb-8">
-            <h3 className="text-xl text-[#566A7F] font-medium">
-              Point Activity
-            </h3>
-          </div>
-          <div className="h-96">
-            <div style={{ width: "100%", height: 300 }}>
-              <ResponsiveContainer>
-                <PieChart>
-                  <Pie
-                    dataKey="value"
-                    data={dataPointActivity}
-                    fill="#8884d8"
-                    label
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-xl px-4 py-4">
+   <AdminWalletBalance/>
+<CustVendorGraph/>
+      {/* <div className="bg-white rounded-xl px-4 py-4">
         <div className="flex justify-between items-center mb-8">
           <h3 className="text-xl text-[#566A7F] font-medium">
             Vendor and Customer Resgistrations
@@ -324,7 +270,7 @@ const DashboardCardNew = () => {
             </BarChart>
           </ResponsiveContainer>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -31,7 +31,7 @@ import PaymentMethodSlice from '../Reducer/PaymentMethodSlice';
 import CourseSlice from '../Reducer/CourseSlice';
 import CustomerSlice from '../Reducer/CustomerSlice';
 import MarchentSlice from '../Reducer/MarchentSlice';
-
+import DashboardSliceNew from '../Reducer/DashboardSliceNew';
 const store = configureStore({
   reducer: {
     auth: AuthSlice,
@@ -66,6 +66,7 @@ const store = configureStore({
     courses: CourseSlice,
     coustomers:CustomerSlice,
     marchent:MarchentSlice,
+    dashNew:DashboardSliceNew
   },
   devTools: import.meta.env.DEV,
 });
