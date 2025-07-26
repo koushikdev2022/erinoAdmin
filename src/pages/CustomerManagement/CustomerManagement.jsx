@@ -729,7 +729,7 @@
 
 
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Modal,
   Button,
@@ -753,7 +753,7 @@ import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { CgAdd } from "react-icons/cg";
-import { HiOutlineMail } from "react-icons/hi";
+import { HiOutlineMail, HiSearch } from "react-icons/hi";
 import { FiPhoneCall } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { getCustomer, getCustomerDetails } from "../../Reducer/CustomerSlice";
@@ -770,6 +770,8 @@ const CustomerManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [openDeleteModal,setOpenDeleteModal]=useState(false)
+  const [searchText, setSearchText] = useState("");
+   const gridRef = useRef()
 
 
   const dispatch = useDispatch();
@@ -883,6 +885,34 @@ const CustomerManagement = () => {
     setCustId(customerData?.id)
   };
 
+    const [filteredData, setFilteredData] = useState([]);
+
+  // Update filtered data when search text or original data changes
+  useEffect(() => {
+    if (!searchText) {
+      setFilteredData(transformedRowData);
+    } else {
+      const filtered = transformedRowData.filter(row => {
+        return Object.values(row).some(value => 
+          String(value).toLowerCase().includes(searchText.toLowerCase())
+        );
+      });
+      setFilteredData(filtered);
+    }
+  }, [searchText, transformedRowData]);
+
+  // Simplified search handlers
+  const onSearchTextChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchText("");
+  };
+
+ const onGridReady = (params) => {
+    gridRef.current = params;
+  };
   const handleManageCustomerDetails = () => {
     setOpenManageCustomerDetailsModal(true);
     setOpenCustomerDetailsModal(false);
@@ -928,17 +958,43 @@ const CustomerManagement = () => {
               </div>
             )}
           </div>
+                  <div className="mb-4 flex gap-4 items-center">
+            <div className="relative flex-1 max-w-md">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <HiSearch className="h-5 w-5 text-gray-400" />
+              </div>
+              <TextInput
+                type="text"
+                placeholder="Search customers..."
+                value={searchText}
+                onChange={onSearchTextChange}
+                className="pl-10"
+                style={{ paddingLeft: '2.5rem' }}
+              />
+            </div>
+            {searchText && (
+              <Button
+                onClick={clearSearch}
+                className="bg-gray-200 text-gray-700 hover:bg-gray-300"
+              >
+                Clear
+              </Button>
+            )}
+          </div>
           <div
             className="ag-theme-alpine"
             style={{ height: 600, width: "100%" }}
           >
             <AgGridReact
-              rowData={transformedRowData}
+             ref={gridRef}
+             rowData={filteredData}
+             // rowData={transformedRowData}
               columnDefs={columnDefs}
               pagination={true}
               paginationPageSize={pageSize}
               domLayout="autoHeight"
               onPaginationChanged={onPaginationChanged}
+               onGridReady={onGridReady}
               loadingOverlayComponent={'Loading customers...'}
               noRowsOverlayComponent={'No customers found'}
             />
