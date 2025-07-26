@@ -122,7 +122,16 @@ import { CiSearch } from "react-icons/ci";
 
 import { HiOutlineMail } from "react-icons/hi";
 
+import { IoMdTrendingUp } from "react-icons/io";
+import { IoMdTrendingDown } from "react-icons/io";
+import { HiUsers } from "react-icons/hi2";
+import { VscActivateBreakpoints } from "react-icons/vsc";
+
 export {
+  VscActivateBreakpoints,
+  HiUsers,
+  IoMdTrendingUp,
+  IoMdTrendingDown,
   HiOutlineMail,
   FiPhoneCall,
   BiUserCircle,
