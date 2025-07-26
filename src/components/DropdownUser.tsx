@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BiSolidUser, BiSolidContact, AiFillSetting, AiOutlineLogout } from "../assets/icons/index";
+import { BiSolidUser, BiSolidContact, AiFillSetting, AiOutlineLogout, FaUserCircle } from "../assets/icons/index";
 
 import UserOne from '../assets/imagesource/user/user-01.png';
 import { useDispatch } from 'react-redux';
@@ -63,11 +63,11 @@ const DropdownUser = () => {
       <Link
         ref={trigger}
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-4"
+        className="flex items-center gap-2"
         to="#"
       >
         <span className="hidden text-right lg:block">
-          <span className="block text-xs font-medium text-black">
+          <span className="block text-xs font-semibold text-[#536EFF]">
             User Name
           </span>
           <span className="block text-xs text-gray-400">
@@ -76,9 +76,10 @@ const DropdownUser = () => {
           </span>
         </span>
 
-        {/* <span className="h-8 w-8 rounded-full">
-          <img src={profileDetail?.data?.avatar ? profileDetail?.data?.avatar : UserOne} alt="User" />
-        </span> */}
+        <span className="h-8 w-8 rounded-full">
+          {/* <img src={profileDetail?.data?.avatar ? profileDetail?.data?.avatar : UserOne} alt="User" /> */}
+          <FaUserCircle className='text-3xl' />
+        </span>
 
         <svg
           className={`hidden fill-current sm:block ${dropdownOpen ? 'rotate-180' : ''

@@ -126,8 +126,10 @@ import { IoMdTrendingUp } from "react-icons/io";
 import { IoMdTrendingDown } from "react-icons/io";
 import { HiUsers } from "react-icons/hi2";
 import { VscActivateBreakpoints } from "react-icons/vsc";
+import { FaUserCircle } from "react-icons/fa";
 
 export {
+  FaUserCircle,
   VscActivateBreakpoints,
   HiUsers,
   IoMdTrendingUp,
