@@ -74,6 +74,26 @@ export const deleteCustomerDetails=createAsyncThunk(
 )
 
 
+export const customerActiveDeactive=createAsyncThunk(
+    'customerActiveDeactive',
+      async (user_input, { rejectWithValue }) => {
+
+        try {
+            const response = await api.patch(`admin/customer/activation`,user_input);
+            if (response?.data?.status_code === 200) {
+                return response.data;
+            } else {
+                return rejectWithValue(response.data);
+            }
+        } catch (err) {
+            // let errors = errorHandler(err);
+            return rejectWithValue(err);
+        }
+    }
+)
+
+
+
 
 
 const initialState={

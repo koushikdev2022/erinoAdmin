@@ -22,7 +22,6 @@ export const getMarchent=createAsyncThunk(
     }
 )
 
-
 export const getMarchentDetails=createAsyncThunk(
     'getMarchentDetails',
          async (user_input, { rejectWithValue }) => {
@@ -43,11 +42,34 @@ export const getMarchentDetails=createAsyncThunk(
         }
     }
 )
+
+export const addMarchent=createAsyncThunk(
+'addMarchent',
+          async (user_input, { rejectWithValue }) => {
+
+        try {
+            const response = await api.post(`/admin/vendor/add-vendor`,user_input);
+            console.log("response",response);
+            if (response?.data?.status_code === 201) {
+                 return response.data;
+                
+                
+            } else {
+                return rejectWithValue(response.data);
+            }
+        } catch (err) {
+            // let errors = errorHandler(err);
+            return rejectWithValue(err);
+        }
+    }
+
+)
 const initialState={
     loading:false,
     error:false,
     marchentList:[],
-    singleMarchent:{}
+    singleMarchent:{},
+    addVendorData:{}
 }
 const MarchentSlice=createSlice(
     {
@@ -76,6 +98,17 @@ const MarchentSlice=createSlice(
                 state.error=false
             })
              .addCase(getMarchentDetails.rejected,(state,{payload})=>{
+                state.loading=false
+                state.error=payload
+            })
+            .addCase(addMarchent.pending,(state)=>{
+                state.loading=true
+            }).addCase(addMarchent.fulfilled,(state,{payload})=>{
+                state.loading=false
+                state.addVendorData=payload
+                state.error=false
+            })
+            .addCase(addMarchent.rejected,(state,{payload})=>{
                 state.loading=false
                 state.error=payload
             })

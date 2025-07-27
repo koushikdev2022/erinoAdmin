@@ -80,7 +80,7 @@ setOpenDeleteModal(true)
                 Last Login Date
               </div>
               <div className="text-sm text-[#2A2A3C] font-medium mb-2 w-6/12">
-                03 Jul 2025
+                { new Date(selectedCustomer?.data?.validate_otp).toISOString().split('T')[0]}
               </div>
             </div>
             <div className="flex gap-4">
@@ -88,7 +88,12 @@ setOpenDeleteModal(true)
                 Last Login Time
               </div>
               <div className="text-sm text-[#2A2A3C] font-medium mb-2 w-6/12">
-                6:12 PM
+              {new Date(selectedCustomer?.data?.validate_otp).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "UTC",
+  })}
               </div>
             </div>
             <div className="flex gap-4">
