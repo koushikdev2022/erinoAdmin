@@ -64,12 +64,58 @@ export const addMarchent=createAsyncThunk(
     }
 
 )
+
+export const updateMarchent=createAsyncThunk(
+'updateMarchent',
+          async (user_input, { rejectWithValue }) => {
+
+        try {
+            const response = await api.post(`/admin/vendor/update-vendor`,user_input);
+            console.log("response",response);
+            if (response?.data?.status_code === 200) {
+                 return response.data;
+                
+                
+            } else {
+                return rejectWithValue(response.data);
+            }
+        } catch (err) {
+            // let errors = errorHandler(err);
+            return rejectWithValue(err);
+        }
+    }
+
+)
+
+export const suspendMarchent=createAsyncThunk(
+'suspendMarchent',
+          async (user_input, { rejectWithValue }) => {
+
+        try {
+            const response = await api.post(`/admin/vendor/suspend-account`,user_input);
+            console.log("response",response);
+            if (response?.data?.status_code === 200) {
+                 return response.data;
+                
+                
+            } else {
+                return rejectWithValue(response.data);
+            }
+        } catch (err) {
+            // let errors = errorHandler(err);
+            return rejectWithValue(err);
+        }
+    }
+
+)
 const initialState={
     loading:false,
     error:false,
     marchentList:[],
     singleMarchent:{},
-    addVendorData:{}
+    addVendorData:{},
+    updateMarchentData:{},
+    delmarchentData:{}
 }
 const MarchentSlice=createSlice(
     {
@@ -109,6 +155,29 @@ const MarchentSlice=createSlice(
                 state.error=false
             })
             .addCase(addMarchent.rejected,(state,{payload})=>{
+                state.loading=false
+                state.error=payload
+            })
+            .addCase(updateMarchent.pending,(state)=>{
+                state.loading=true
+            }).addCase(updateMarchent.fulfilled,(state,{payload})=>{
+                state.loading=false
+                state.updateMarchentData=payload
+                state.error=false
+            })
+            .addCase(updateMarchent.rejected,(state,{payload})=>{
+                state.loading=false
+                state.error=payload
+            })
+            .addCase(suspendMarchent.pending,(state)=>{
+                state.loading=true
+            })
+            .addCase(suspendMarchent.fulfilled,(state,{payload})=>{
+                state.loading=false
+                state.delmarchentData=payload
+                state.error=false
+            })
+            .addCase(suspendMarchent.rejected,(state,{payload})=>{
                 state.loading=false
                 state.error=payload
             })

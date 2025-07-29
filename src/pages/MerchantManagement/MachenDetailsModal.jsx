@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
 const MarchentDetailsModal=({openMerchantDetailsModal,
-     setOpenMerchantDetailsModal,mId
+     setOpenMerchantDetailsModal,setOpenManageMerchantDetailsModal,mId
 })=>{
      const{singleMarchent}=useSelector((state)=>state?.marchent)
      const dispatch=useDispatch()
@@ -13,7 +13,10 @@ const MarchentDetailsModal=({openMerchantDetailsModal,
     useEffect(()=>{
 dispatch(getMarchentDetails({vendor_id:mId}))
     },[mId])
-    
+     const handleManageMerchantDetails = () => {
+    setOpenManageMerchantDetailsModal(true);
+    setOpenMerchantDetailsModal(false);
+  };
     return(
         <>
          <Modal
@@ -235,7 +238,7 @@ dispatch(getMarchentDetails({vendor_id:mId}))
                     Cancel
                   </Button>
                   <Button
-                    // onClick={handleManageMerchantDetails}
+                     onClick={handleManageMerchantDetails}
                     className="bg-[#686AF8] hover:bg-black"
                   >
                     Manage Merchant
