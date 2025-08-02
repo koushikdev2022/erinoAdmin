@@ -32,6 +32,7 @@ import ShopModal from "./ShopModal";
 import AddMarchant from "./AddMarchant";
 import UpdateMarchentModal from "./UpdateMarchentModal";
 import DeleModalMarchent from "./DeleModalMarchent";
+import UpdateShopModal from "./UpdateShopModal";
 
 const MerchantManagement = () => {
   const{marchentList,singleMarchent}=useSelector((state)=>state?.marchent)
@@ -45,6 +46,8 @@ const MerchantManagement = () => {
     const[mId,setmId]=useState()
   const navigate = useNavigate();
   const[openShopModal,setOpenShopModal]=useState(false)
+  const[openShopUpdateModal,setOpenShopUpdateModal]=useState(false)
+  const[shopId,setShopId]=useState()
   useEffect(()=>{
 dispatch(getMarchent())
   },[])
@@ -220,6 +223,8 @@ dispatch(getMarchent())
           openShopModal={openShopModal}
           setOpenShopModal={setOpenShopModal}
           mId={mId}
+          setOpenShopUpdateModal={setOpenShopUpdateModal}
+        setShopId={setShopId}
           />
         )
       }
@@ -245,6 +250,17 @@ dispatch(getMarchent())
           setOpenManageMerchantDetailsModal={setOpenManageMerchantDetailsModal}
         />
       )}
+      {
+        openShopUpdateModal&&
+        <UpdateShopModal
+        openShopUpdateModal={openShopUpdateModal}
+        setOpenShopUpdateModal={setOpenShopUpdateModal}
+        setShopId={setShopId}
+        shopId={shopId}
+        setOpenShopModal={setOpenShopModal}
+
+        />
+      }
       {/* Manage Merchant Details modal ends here */}
     </div>
   );

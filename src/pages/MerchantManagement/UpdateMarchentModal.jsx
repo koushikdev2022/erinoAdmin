@@ -1,7 +1,7 @@
 import { Button, Label, Modal, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Textarea, TextInput } from "flowbite-react";
 import { FiPhoneCall } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
-import { getMarchentDetails, updateMarchent } from "../../Reducer/MarchentSlice";
+import { getMarchent, getMarchentDetails, updateMarchent } from "../../Reducer/MarchentSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -29,11 +29,14 @@ const UpdateMarchentModal=({openManageMerchantDetailsModal,
               setValue("email",singleMarchent?.res?.[0]?.email);
               setValue("mobile",singleMarchent?.res?.[0]?.mobile);
              
-              
             },[setValue,mId,singleMarchent])
             const onSubmit=(data)=>{
               dispatch(updateMarchent({...data,vendor_id:mId})).then((res)=>{
                 console.log("Res",res);
+                if(res?.payload?.status_code===200){
+                  setOpenManageMerchantDetailsModal(false)
+                  dispatch(getMarchent())
+                }
                 
               })
             }

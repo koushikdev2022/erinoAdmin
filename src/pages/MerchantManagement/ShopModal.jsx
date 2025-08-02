@@ -2,20 +2,28 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getMarchentDetails } from "../../Reducer/MarchentSlice";
 import { useEffect } from "react";
-import { Modal, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
+import { Button, Modal, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 
 const ShopModal=({openShopModal,
           setOpenShopModal,
-          mId})=>{
+          mId,
+         setOpenShopUpdateModal,
+        setShopId})=>{
               const{singleMarchent}=useSelector((state)=>state?.marchent)
      const dispatch=useDispatch()
     console.log(singleMarchent,"singleMarchent");
     useEffect(()=>{
 dispatch(getMarchentDetails({vendor_id:mId}))
     },[mId])
+
+    const handleShopUpdate=(id)=>{
+      setOpenShopUpdateModal(true)
+      setShopId(id)
+    }
     return(
         <>
         <Modal
+        size="2xl"
                         show={openShopModal}
                         onClose={() => setOpenShopModal(false)}
                       >
@@ -40,6 +48,9 @@ dispatch(getMarchentDetails({vendor_id:mId}))
                                     <TableHeadCell className="font-semibild">
                                       Zip Code
                                     </TableHeadCell>
+                                    <TableHeadCell className="font-semibild">
+                                      Action
+                                    </TableHeadCell>
                                   </TableHead>
                                   <TableBody className="divide-y">
                                     {
@@ -58,6 +69,15 @@ dispatch(getMarchentDetails({vendor_id:mId}))
                                       </TableCell>
                                       <TableCell className="py-2 text-[#697A8D]">
                                         {shops?.zip}
+                                      </TableCell>
+
+                                      <TableCell className="py-2 text-[#697A8D]">
+                                        <Button
+                                                  onClick={()=>handleShopUpdate(shops?.id)}
+                                                  className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
+                                                >
+                                                  Update
+                                                </Button>
                                       </TableCell>
                                     </TableRow>
                                                 </>

@@ -108,6 +108,49 @@ export const suspendMarchent=createAsyncThunk(
     }
 
 )
+
+export const getMarchentShopDetails=createAsyncThunk(
+'getMarchentShopDetails',
+          async (user_input, { rejectWithValue }) => {
+
+        try {
+            const response = await api.post(`/admin/vendor/get-vendor-shop-details`,user_input);
+            console.log("response",response);
+            if (response?.data?.status_code === 200) {
+                 return response.data;
+                
+                
+            } else {
+                return rejectWithValue(response.data);
+            }
+        } catch (err) {
+            // let errors = errorHandler(err);
+            return rejectWithValue(err);
+        }
+    }
+
+)
+
+export const updateMarchentShopDetails=createAsyncThunk(
+'updateMarchentShopDetails',
+          async (user_input, { rejectWithValue }) => {
+
+        try {
+            const response = await api.post(`/admin/vendor/update-vendor`,user_input);
+            console.log("response",response);
+            if (response?.data?.status_code === 200) {
+                 return response.data;
+                
+            } else {
+                return rejectWithValue(response.data);
+            }
+        } catch (err) {
+            // let errors = errorHandler(err);
+            return rejectWithValue(err);
+        }
+    }
+
+)
 const initialState={
     loading:false,
     error:false,
@@ -115,7 +158,9 @@ const initialState={
     singleMarchent:{},
     addVendorData:{},
     updateMarchentData:{},
-    delmarchentData:{}
+    delmarchentData:{},
+    singleShope:{},
+    updateShop:{}
 }
 const MarchentSlice=createSlice(
     {
@@ -178,6 +223,30 @@ const MarchentSlice=createSlice(
                 state.error=false
             })
             .addCase(suspendMarchent.rejected,(state,{payload})=>{
+                state.loading=false
+                state.error=payload
+            })
+            .addCase(getMarchentShopDetails.pending,(state)=>{
+                state.loading=true
+            })
+            .addCase(getMarchentShopDetails.fulfilled,(state,{payload})=>{
+                state.loading=false
+                state.singleShope=payload
+                state.error=false
+            })
+            .addCase(getMarchentShopDetails.rejected,(state,{payload})=>{
+                state.loading=false
+                state.error=payload
+            })
+            .addCase(updateMarchentShopDetails.pending,(state)=>{
+                state.loading=true
+            })
+            .addCase(updateMarchentShopDetails.fulfilled,(state,{payload})=>{
+                state.loading=false
+                state.updateShop=payload
+                state.error=false
+            })
+            .addCase(updateMarchentShopDetails.rejected,(state,{payload})=>{
                 state.loading=false
                 state.error=payload
             })
