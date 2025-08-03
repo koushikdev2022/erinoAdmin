@@ -128,16 +128,16 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getdashBoardData } from "../Reducer/DashboardSliceNew";
 import AdminWalletBalance from "./OrderStatus/AdminWalletBalance";
-import CustVendorGraph from "./OrderStatus/CustVendorGraph"
+import CustVendorGraph from "./OrderStatus/CustVendorGraph";
 
 const DashboardCardNew = () => {
-  const {dashData}=useSelector((state)=>state?.dashNew)
-  const dispatch=useDispatch()
-  useEffect(()=>{
-dispatch(getdashBoardData())
-  },[])
-  console.log("dashData",dashData);
-  
+  const { dashData } = useSelector((state) => state?.dashNew);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getdashBoardData());
+  }, []);
+  console.log("dashData", dashData);
+
   return (
     <div>
       <div className="grid grid-cols-4 gap-6 mb-6">
@@ -148,7 +148,7 @@ dispatch(getdashBoardData())
                 Total Customers
               </p>
               <h3 className="text-[#202224] text-[24px] leading-[32px] font-medium pb-2">
-                {dashData?.data?.valid_customer}
+                {dashData?.data?.total_customers?.count}
               </h3>
             </div>
             <div className="bg-[#E0E1FF] rounded-[6px] w-[56px] h-[56px] flex justify-center items-center">
@@ -156,9 +156,17 @@ dispatch(getdashBoardData())
             </div>
           </div>
           <div className="flex items-center">
-            <IoMdTrendingUp className="text-[#00B69B] text-2xl mr-2" />
+            {dashData?.data?.total_customers?.change_type === "down" ? (
+              <IoMdTrendingDown className="text-[#FF3E1D] text-2xl mr-2" />
+            ) : (
+              <IoMdTrendingUp className="text-[#00B69B] text-2xl mr-2" />
+            )}
+
             <p className="text-[#636466] text-sm font-normal pb-0">
-              <span className="text-[#00B69B]">8.5%</span> Up from yesterday
+              <span className="text-[#00B69B]">
+                {dashData?.data?.total_customers?.change_percentage}%
+              </span>{" "}
+              Down from yesterday
             </p>
           </div>
         </div>
@@ -169,7 +177,7 @@ dispatch(getdashBoardData())
                 Total Merchants
               </p>
               <h3 className="text-[#202224] text-[24px] leading-[32px] font-medium pb-2">
-                {dashData?.data?.valid_vendor}
+                {dashData?.data?.total_merchants?.count}
               </h3>
             </div>
             <div className="bg-[#FFF5DF] rounded-[6px] w-[56px] h-[56px] flex justify-center items-center">
@@ -177,9 +185,16 @@ dispatch(getdashBoardData())
             </div>
           </div>
           <div className="flex items-center">
-            <IoMdTrendingUp className="text-[#00B69B] text-2xl mr-2" />
+            {dashData?.data?.total_merchants?.change_type === "down" ? (
+              <IoMdTrendingDown className="text-[#FF3E1D] text-2xl mr-2" />
+            ) : (
+              <IoMdTrendingUp className="text-[#00B69B] text-2xl mr-2" />
+            )}
             <p className="text-[#636466] text-sm font-normal pb-0">
-              <span className="text-[#00B69B]">8.5%</span> Up from yesterday
+              <span className="text-[#00B69B]">
+                {dashData?.data?.total_merchants?.change_percentage}%
+              </span>{" "}
+              Down from yesterday
             </p>
           </div>
         </div>
@@ -190,7 +205,7 @@ dispatch(getdashBoardData())
                 Wallet Balance
               </p>
               <h3 className="text-[#202224] text-[24px] leading-[32px] font-medium pb-2">
-                ₹35111
+                {dashData?.data?.wallet_balance?.formatted_amount}
               </h3>
             </div>
             <div className="bg-[#EEFFD5] rounded-[6px] w-[56px] h-[56px] flex justify-center items-center">
@@ -198,9 +213,17 @@ dispatch(getdashBoardData())
             </div>
           </div>
           <div className="flex items-center">
-            <IoMdTrendingDown className="text-[#FF3E1D] text-2xl mr-2" />
+            {dashData?.data?.wallet_balance?.change_type === "down" ? (
+              <IoMdTrendingDown className="text-[#FF3E1D] text-2xl mr-2" />
+            ) : (
+              <IoMdTrendingUp className="text-[#00B69B] text-2xl mr-2" />
+            )}
             <p className="text-[#636466] text-sm font-normal pb-0">
-              <span className="text-[#FF3E1D]">4.3%</span> Down from yesterday
+              <span className="text-[#FF3E1D]">
+                {/* {dashData?.data?.wallet_balance?.change_percentage}% */}
+                95%
+              </span>{" "}
+              Up from yesterday
             </p>
           </div>
         </div>
@@ -211,7 +234,7 @@ dispatch(getdashBoardData())
                 Customers Points Overview
               </p>
               <h3 className="text-[#202224] text-[24px] leading-[32px] font-medium pb-2">
-                40,689
+                {dashData?.data?.points_overview?.total_valid_coins}
               </h3>
             </div>
             <div className="bg-[#F5E0FF] rounded-[6px] w-[56px] h-[56px] flex justify-center items-center">
@@ -219,16 +242,23 @@ dispatch(getdashBoardData())
             </div>
           </div>
           <div className="flex items-center">
-            <IoMdTrendingUp className="text-[#00B69B] text-2xl mr-2" />
+            {dashData?.data?.points_overview?.change_type === "down" ? (
+              <IoMdTrendingDown className="text-[#FF3E1D] text-2xl mr-2" />
+            ) : (
+              <IoMdTrendingUp className="text-[#00B69B] text-2xl mr-2" />
+            )}
             <p className="text-[#636466] text-sm font-normal pb-0">
-              <span className="text-[#00B69B]">8.5%</span> Up from yesterday
+              <span className="text-[#00B69B]">
+                {dashData?.data?.points_overview?.change_percentage}%
+              </span>{" "}
+              Down from yesterday
             </p>
           </div>
         </div>
       </div>
 
-   <AdminWalletBalance/>
-<CustVendorGraph/>
+      <AdminWalletBalance />
+      <CustVendorGraph />
       {/* <div className="bg-white rounded-xl px-4 py-4">
         <div className="flex justify-between items-center mb-8">
           <h3 className="text-xl text-[#566A7F] font-medium">
