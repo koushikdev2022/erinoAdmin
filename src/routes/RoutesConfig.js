@@ -19,6 +19,7 @@ import ManageRoles from '../pages/ManageRoles/ManageRoles.jsx';
 import PaymentMethodList from '../pages/PaymentMethod/PaymentMethodList.jsx';
 import MerchantManagement from '../pages/MerchantManagement/MerchantManagement.jsx';
 import CustomerManagement from '../pages/CustomerManagement/CustomerManagement.jsx';
+import PlanBadgeManagement from '../pages/PlanBadgeManagement/PlanBadgeManagement.jsx';
 
 const allRoutes = [
   {
@@ -80,6 +81,16 @@ const allRoutes = [
       {
         index: true,
         element: <CustomerManagement />,
+      },
+    ],
+  },
+    {
+    path: '/plan-badge',
+    element: <InsideLayout />,
+    children: [
+      {
+        index: true,
+        element: <PlanBadgeManagement />,
       },
     ],
   },
