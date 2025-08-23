@@ -92,6 +92,41 @@ export const planBadgeActiveDeactive=createAsyncThunk(
     }
 )
 
+export const getPlans=createAsyncThunk(
+    'getPlans',
+      async (_, { rejectWithValue }) => {
+
+        try {
+            const response = await api.get(`admin/plan-badge-mange/plan-dropdown`);
+            if (response?.data?.status_code === 200) {
+                return response.data;
+            } else {
+                return rejectWithValue(response.data);
+            }
+        } catch (err) {
+            // let errors = errorHandler(err);
+            return rejectWithValue(err);
+        }
+    }
+)
+
+export const addPlanBadge=createAsyncThunk(
+    'addPlanBadge',
+      async (user_input, { rejectWithValue }) => {
+
+        try {
+            const response = await api.post(`/admin/plan-badge-mange/add`,user_input);
+            if (response?.data?.status_code === 201) {
+                return response.data;
+            } else {
+                return rejectWithValue(response.data);
+            }
+        } catch (err) {
+            // let errors = errorHandler(err);
+            return rejectWithValue(err);
+        }
+    }
+)
 
 
 
@@ -103,7 +138,9 @@ const initialState={
     singlePlanbdge:{},
     errorSingle:false,
     updatePlanBadgeData:{},
-    delCust:{}
+    delCust:{},
+    plans:[],
+    addBadgeData:"",
 }
 
 const PlanbadgeSlice=createSlice(
@@ -149,18 +186,30 @@ const PlanbadgeSlice=createSlice(
                 state.loading=false
                 state.error=payload
             })
-            // .addCase(deleteCustomerDetails.pending,(state)=>{
-            //     state.loading=true
-            // })
-            // .addCase(deleteCustomerDetails.fulfilled,(state,{payload})=>{
-            //     state.loading=false
-            //     state.delCust=payload
-            //     state.error=false
-            // })
-            // .addCase(deleteCustomerDetails.rejected,(state,{payload})=>{
-            //     state.loading=false
-            //     state.error=payload
-            // })
+            .addCase(getPlans.pending,(state)=>{
+                state.loading=true
+            })
+            .addCase(getPlans.fulfilled,(state,{payload})=>{
+                state.loading=false
+                state.plans=payload
+                state.error=false
+            })
+            .addCase(getPlans.rejected,(state,{payload})=>{
+                state.loading=false
+                state.error=payload
+            })
+            .addCase(addPlanBadge.pending,(state)=>{
+                state.loading=true
+            })
+            .addCase(addPlanBadge.fulfilled,(state,{payload})=>{
+                state.loading=false
+                state.addBadgeData=payload
+                state.error=false
+            })
+            .addCase(addPlanBadge.rejected,(state,{payload})=>{
+                state.loading=false
+                state.error=payload
+            })
         }
         
     }
