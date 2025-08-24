@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../store/Api";
 
-export const getPlanBadge=createAsyncThunk(
-    'getPlanBadge',
+export const getAllPlans=createAsyncThunk(
+    'getAllPlans',
       async ({page,limit}, { rejectWithValue }) => {
 
         try {
-            const response = await api.get(`/admin/plan-badge-mange/list?page=${page}&limit=${limit}`);
+            const response = await api.get(`/admin/plan-mange/list?page=${page}&limit=${limit}`);
             if (response?.data?.status_code === 200) {
                 return response.data;
             } else {
@@ -19,12 +19,12 @@ export const getPlanBadge=createAsyncThunk(
     }
 )
 
-export const getPlanBatchDetails=createAsyncThunk(
-    'getPlanBatchDetails',
+export const getPlansDetails=createAsyncThunk(
+    'getPlansDetails',
       async (user_input, { rejectWithValue }) => {
 
         try {
-            const response = await api.get(`/admin/plan-badge-mange/detail/${user_input}`);
+            const response = await api.get(`/admin/plan-mange/details/${user_input}`);
             if (response?.data?.status_code === 200) {
                 return response.data;
             } else {
@@ -37,12 +37,12 @@ export const getPlanBatchDetails=createAsyncThunk(
     }
 )
 
-export const updatePlanBadgeDetails=createAsyncThunk(
-    'updatePlanBadgeDetails',
+export const updatePlanDetails=createAsyncThunk(
+    'updatePlanDetails',
       async (user_input, { rejectWithValue }) => {
 
         try {
-            const response = await api.put(`/admin/plan-badge-mange/edit`,user_input);
+            const response = await api.put(`/admin/plan-mange/edit`,user_input);
             if (response?.data?.status_code === 200) {
                 return response.data;
             } else {
@@ -55,31 +55,14 @@ export const updatePlanBadgeDetails=createAsyncThunk(
     }
 )
 
-// export const deleteCustomerDetails=createAsyncThunk(
-//     'deleteCustomerDetails',
-//       async (user_input, { rejectWithValue }) => {
-
-//         try {
-//             const response = await api.delete(`/admin/customer/delete-customer`,{data:user_input});
-//             if (response?.data?.status_code === 200) {
-//                 return response.data;
-//             } else {
-//                 return rejectWithValue(response.data);
-//             }
-//         } catch (err) {
-//             // let errors = errorHandler(err);
-//             return rejectWithValue(err);
-//         }
-//     }
-// )
 
 
-export const planBadgeActiveDeactive=createAsyncThunk(
-    'planBadgeActiveDeactive',
+export const planActiveDeactive=createAsyncThunk(
+    'planActiveDeactive',
       async (user_input, { rejectWithValue }) => {
 
         try {
-            const response = await api.patch(`admin/plan-badge-mange/activation`,user_input);
+            const response = await api.patch(`admin/plan-mange/activation`,user_input);
             if (response?.data?.status_code === 200) {
                 return response.data;
             } else {
@@ -110,12 +93,12 @@ export const getPlans=createAsyncThunk(
     }
 )
 
-export const addPlanBadge=createAsyncThunk(
-    'addPlanBadge',
+export const addPlans=createAsyncThunk(
+    'addPlans',
       async (user_input, { rejectWithValue }) => {
 
         try {
-            const response = await api.post(`/admin/plan-badge-mange/add`,user_input);
+            const response = await api.post(`/admin/plan-mange/add`,user_input);
             if (response?.data?.status_code === 201) {
                 return response.data;
             } else {
@@ -133,56 +116,56 @@ export const addPlanBadge=createAsyncThunk(
 
 const initialState={
     loading:false,
-    planBadgeList:[],
+    planList:[],
     error:false,
-    singlePlanbdge:{},
+    singlePlan:{},
     errorSingle:false,
-    updatePlanBadgeData:{},
+    updatePlanData:{},
     delCust:{},
     plans:[],
-    addBadgeData:"",
+    addPlanData:"",
 }
 
-const PlanbadgeSlice=createSlice(
+const PlanManagementSlice=createSlice(
     {
-        name:'planBad',
+        name:'planMan',
         initialState,
         reducers:{},
         extraReducers:(builder)=>{
             builder
-            .addCase(getPlanBadge.pending,(state)=>{
+            .addCase(getAllPlans.pending,(state)=>{
                 state.loading=true
             })
-            .addCase(getPlanBadge.fulfilled,(state,{payload})=>{
+            .addCase(getAllPlans.fulfilled,(state,{payload})=>{
                 state.loading=false
-                state.planBadgeList=payload
+                state.planList=payload
                 state.error=false
             })
-            .addCase(getPlanBadge.rejected,(state,{payload})=>{
+            .addCase(getAllPlans.rejected,(state,{payload})=>{
                 state.loading=false
                 state.error=payload
             })
-            .addCase(getPlanBatchDetails.pending,(state)=>{
+            .addCase(getPlansDetails.pending,(state)=>{
                 state.loading=true
             })
-            .addCase(getPlanBatchDetails.fulfilled,(state,{payload})=>{
+            .addCase(getPlansDetails.fulfilled,(state,{payload})=>{
                 state.loading=false
-                state.singlePlanbdge=payload
+                state.singlePlan=payload
                 state.error=false
             })
-            .addCase(getPlanBatchDetails.rejected,(state,{payload})=>{
+            .addCase(getPlansDetails.rejected,(state,{payload})=>{
                 state.loading=false
                 state.errorSingle=payload
             })
-            .addCase(updatePlanBadgeDetails.pending,(state)=>{
+            .addCase(updatePlanDetails.pending,(state)=>{
                 state.loading=true
             })
-            .addCase(updatePlanBadgeDetails.fulfilled,(state,{payload})=>{
+            .addCase(updatePlanDetails.fulfilled,(state,{payload})=>{
                 state.loading=false
-                state.updatePlanBadgeData=payload
+                state.updatePlanData=payload
                 state.error=false
             })
-            .addCase(updatePlanBadgeDetails.rejected,(state,{payload})=>{
+            .addCase(updatePlanDetails.rejected,(state,{payload})=>{
                 state.loading=false
                 state.error=payload
             })
@@ -198,15 +181,15 @@ const PlanbadgeSlice=createSlice(
                 state.loading=false
                 state.error=payload
             })
-            .addCase(addPlanBadge.pending,(state)=>{
+            .addCase(addPlans.pending,(state)=>{
                 state.loading=true
             })
-            .addCase(addPlanBadge.fulfilled,(state,{payload})=>{
+            .addCase(addPlans.fulfilled,(state,{payload})=>{
                 state.loading=false
-                state.addBadgeData=payload
+                state.addPlanData=payload
                 state.error=false
             })
-            .addCase(addPlanBadge.rejected,(state,{payload})=>{
+            .addCase(addPlans.rejected,(state,{payload})=>{
                 state.loading=false
                 state.error=payload
             })
@@ -214,4 +197,4 @@ const PlanbadgeSlice=createSlice(
         
     }
 )
-export default PlanbadgeSlice.reducer
+export default PlanManagementSlice.reducer

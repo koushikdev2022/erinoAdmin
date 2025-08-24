@@ -27,9 +27,9 @@ import { FiPhoneCall } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getPlanBadge, getPlanBatchDetails, getPlans, planBadgeActiveDeactive } from "../../Reducer/PlanbadgeSlice";
-import AddPlanBadgeModal from "./AddPlanBadgeModal";
-import UpdatePlanBadgeModal from "./UpdatePlanBadgeModal";
+import { getPlans} from "../../Reducer/PlanbadgeSlice";
+
+import { getAllPlans, getPlansDetails, planActiveDeactive } from "../../Reducer/PlanManagementSlice";
 
 
 
@@ -80,22 +80,22 @@ const StatusCellRenderer = React.memo((props) => {
     />
   );
 });
-const PlanBadgeManagement = () => {
-  const { planBadgeList, singlePlanbdge,plans } = useSelector((state) => state?.planBad);
+const PlansManagement = () => {
+  const { planList, singlePlan } = useSelector((state) => state?.planMan);
   const dispatch = useDispatch();
-  const [openplanbadgeModal, setOpenPlanbadgeModal] = useState(false);
+  const [openplansModal, setOpenPlansModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [openPlanbadgeDetailsModal, setOpenPlanbadgeDetailsModal] = useState(false);
-  const [pId, setpId] = useState();
+  const [openPlansDetailsModal, setOpenPlansDetailsModal] = useState(false);
+  const [plId, setplId] = useState();
   const navigate = useNavigate();
    const [loadingStates, setLoadingStates] = useState({}); 
 
   useEffect(() => {
-    dispatch(getPlanBadge({ page: currentPage, limit: pageSize }));
+    dispatch(getAllPlans({ page: currentPage, limit: pageSize }));
   }, [dispatch, currentPage, pageSize]);
 
-  console.log("planBadgeList", planBadgeList);
+  console.log("planList", planList);
 
    const handleStatusToggle = useCallback(
       async (planId, newStatus) => {
@@ -107,12 +107,12 @@ const PlanBadgeManagement = () => {
   
           // Prepare the API payload
           const payload = {
-            plan_badge_id: planId,
+            plan_id: planId,
             status: statusValue,
           };
   
           // Dispatch the API call
-          const result = await dispatch(planBadgeActiveDeactive(payload)).unwrap();
+          const result = await dispatch(planActiveDeactive(payload)).unwrap();
   
           // Show success message
           toast.success(
@@ -120,7 +120,7 @@ const PlanBadgeManagement = () => {
           );
   
           // Refresh the customer list to get updated data
-          dispatch(getPlanBadge({ page: currentPage, limit: pageSize }));
+          dispatch(getAllPlans({ page: currentPage, limit: pageSize }));
         } catch (error) {
           console.error("Error toggling Plan status:", error);
           toast.error(
@@ -142,56 +142,32 @@ const PlanBadgeManagement = () => {
 
   const rowData = useMemo(() => {
     // Fixed: Check for planBadgeList.data instead of planBadgeList.res
-    if (!planBadgeList?.data || !Array.isArray(planBadgeList.data)) {
+    if (!planList?.data || !Array.isArray(planList.data)) {
       console.log("No plan badge data available or invalid format");
       return [];
     }
 
     // Fixed: Use planBadgeList.data directly
-    return planBadgeList.data.map((mar) => ({
+    return planList.data.map((mar) => ({
       id: mar?.id, // Ensure unique ID
-      batch_name: mar?.batch_name || "",
-      plan_name: mar?.Plan?.plan_name || "",
-      price: mar?.Plan?.price || "",
+      plan_name:mar?.plan_name,
+      price: mar?.price || "",
       status: mar?.status === 1 ? "Active" : "Inactive",
-      currency: mar?.Plan?.currency || "",
-      frequency: mar?.Plan?.frequency || "",
-      batch_avatar: mar?.batch_avatar || null,
+      currency: mar.currency || "",
+      frequency: mar?.frequency || "",
+      price_id:mar?.price_id
     }));
-  }, [planBadgeList]);
+  }, [planList]);
 
   const columnDefs = useMemo(() => [
-     {
-    field: "batch_avatar",
-    headerName: "BADGE IMAGE",
-    minWidth: 120,
-    cellRenderer: (params) => {
-      if (!params.value) {
-        return <span className="text-gray-400">No Image</span>;
-      }
-      return (
-        <img
-          src={params.value}
-          alt="Badge"
-          className="w-12 h-12 object-cover rounded-full border"
-        />
-      );
-    },
-  },
-    {
-      field: "batch_name",
-      headerName: "BADGE NAME",
-      sortable: true,
-      filter: true,
-      minWidth: 150,
-    },
     {
       field: "plan_name",
       headerName: "PLAN NAME",
       sortable: true,
       filter: true,
-      minWidth: 200,
+      minWidth: 150,
     },
+    
     {
       field: "price",
       headerName: "PRICE",
@@ -258,15 +234,15 @@ const PlanBadgeManagement = () => {
   );
 
   const handleAddPlanBadge = () => {
-    setOpenPlanbadgeModal(true);
-    dispatch(getPlans())
+    setOpenPlansModal(true);
+    //dispatch(getPlans())
   };
 
   const handlePlanBadgeDetails=(id)=>{
-    setOpenPlanbadgeDetailsModal(true)
-    setpId(id)
-    dispatch(getPlanBatchDetails(id))
-    dispatch(getPlans())
+    setOpenPlansDetailsModal(true)
+    setplId(id)
+    dispatch(getPlansDetails(id))
+   // dispatch(getPlans())
   }
 
   // Add debug logging
@@ -279,13 +255,13 @@ const PlanBadgeManagement = () => {
       <div className="wrapper_area my-0 mx-auto p-6 rounded-xl bg-white">
         <div className="h-full lg:h-screen">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold">Plan Badge List</h2>
+            <h2 className="text-2xl font-semibold">Plan List</h2>
             <Button
               onClick={() => handleAddPlanBadge()}
               className="bg-[#536EFF] hover:bg-[#E7E7FF] px-4 py-1 text-white hover:text-[#536EFF] text-base font-semibold flex justify-center items-center rounded-md"
             >
               <CgAdd className="text-[18px] mr-1" />
-              Add Plan Badge
+              Add Plan
             </Button>
           </div>
           
@@ -307,7 +283,7 @@ const PlanBadgeManagement = () => {
           </div>
         </div>
       </div>
-      {
+      {/* {
         (openplanbadgeModal&&plans)&&(
           <AddPlanBadgeModal
           openplanbadgeModal={openplanbadgeModal}
@@ -326,9 +302,9 @@ const PlanBadgeManagement = () => {
            pId={pId}
           />
         )
-      }
+      } */}
     </div>
   );
 };
 
-export default PlanBadgeManagement;
+export default PlansManagement;

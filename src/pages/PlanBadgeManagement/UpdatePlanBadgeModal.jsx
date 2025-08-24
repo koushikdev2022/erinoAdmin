@@ -38,7 +38,7 @@ const UpdatePlanBadgeModal = ({
       // Set current image
       if (singlePlanbdge.data.batch_avatar) {
         // Clean the image URL if it has "undefined/" prefix
-        let imageUrl ="http://localhost:8000/api/v1/"+ singlePlanbdge.data.batch_avatar;
+        let imageUrl = singlePlanbdge.data.batch_avatar;
         // if (imageUrl.startsWith('undefined/')) {
         //   imageUrl = imageUrl.replace('undefined/', '');
         // }

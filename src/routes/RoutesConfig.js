@@ -20,6 +20,7 @@ import PaymentMethodList from '../pages/PaymentMethod/PaymentMethodList.jsx';
 import MerchantManagement from '../pages/MerchantManagement/MerchantManagement.jsx';
 import CustomerManagement from '../pages/CustomerManagement/CustomerManagement.jsx';
 import PlanBadgeManagement from '../pages/PlanBadgeManagement/PlanBadgeManagement.jsx';
+import PlansManagement from '../pages/PlansManagement/PlansManagement.jsx';
 
 const allRoutes = [
   {
@@ -91,6 +92,16 @@ const allRoutes = [
       {
         index: true,
         element: <PlanBadgeManagement />,
+      },
+    ],
+  },
+  {
+    path: '/plans',
+    element: <InsideLayout />,
+    children: [
+      {
+        index: true,
+        element: <PlansManagement />,
       },
     ],
   },
