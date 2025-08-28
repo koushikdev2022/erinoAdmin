@@ -128,7 +128,12 @@ import { HiUsers } from "react-icons/hi2";
 import { VscActivateBreakpoints } from "react-icons/vsc";
 import { FaUserCircle } from "react-icons/fa";
 
+import { SlBadge } from "react-icons/sl";
+import { LiaListAlt } from "react-icons/lia";
+
 export {
+  SlBadge,
+  LiaListAlt,
   FaUserCircle,
   VscActivateBreakpoints,
   HiUsers,

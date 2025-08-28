@@ -5,7 +5,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from "../layout/SidebarLinkGroup";
 import { logo, smallLogo } from '../../assets/images/images';
 
-import { AiFillSetting, AiFillTag, AiFillTags, AiOutlineDashboard, AiOutlineLogout, AiOutlineNotification, AiOutlineUser, BiLineChart, BiLineChartDown, BiUserCircle, BiUserPin, BsPersonWorkspace, BsViewStacked, FiHome, MdManageAccounts, MdOutlineShoppingCartCheckout, MdSpaceDashboard, MdViewStream, PiClipboardTextBold, RiCoupon2Fill, RiCouponLine, RxDashboard, TfiMenuAlt } from "../../assets/icons/index";
+import { AiFillSetting, AiFillTag, AiFillTags, AiOutlineDashboard, AiOutlineLogout, AiOutlineNotification, AiOutlineUser, BiLineChart, BiLineChartDown, BiUserCircle, BiUserPin, BsPersonWorkspace, BsViewStacked, FiHome, LiaListAlt, MdManageAccounts, MdOutlineShoppingCartCheckout, MdSpaceDashboard, MdViewStream, PiClipboardTextBold, RiCoupon2Fill, RiCouponLine, RxDashboard, SlBadge, TfiMenuAlt } from "../../assets/icons/index";
 import { FaCircle, FaFirstOrderAlt } from 'react-icons/fa';
 import { MdSportsKabaddi, MdFamilyRestroom, MdSchool, MdAdminPanelSettings, MdOutlineSubscriptions, MdSubscriptions, MdTopic, MdPayment, MdClass } from 'react-icons/md';
 import userRoles from '../../pages/utils/userRoles';
@@ -189,11 +189,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   {sidebarOpen ?
                     <>
-                      <BiUserCircle className='text-xl' />
+                      <SlBadge className='text-xl' />
                     </>
                     :
                     <>
-                      <BiUserCircle className='text-xl' />
+                      <SlBadge className='text-xl' />
                       Plan Badge
                     </>
                   }
@@ -210,11 +210,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   {sidebarOpen ?
                     <>
-                      <BiUserCircle className='text-xl' />
+                      <LiaListAlt className='text-2xl' />
                     </>
                     :
                     <>
-                      <BiUserCircle className='text-xl' />
+                      <LiaListAlt className='text-2xl' />
                       Plans
                     </>
                   }
