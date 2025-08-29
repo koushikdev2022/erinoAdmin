@@ -30,6 +30,8 @@ import { useDispatch } from "react-redux";
 import { getPlans} from "../../Reducer/PlanbadgeSlice";
 
 import { getAllPlans, getPlansDetails, planActiveDeactive } from "../../Reducer/PlanManagementSlice";
+import AddPlansModal from "./AddPlansModal";
+import UpdatePlanModal from "./UpdatePlanModal";
 
 
 
@@ -86,10 +88,11 @@ const PlansManagement = () => {
   const [openplansModal, setOpenPlansModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [openPlansDetailsModal, setOpenPlansDetailsModal] = useState(false);
-  const [plId, setplId] = useState();
+  const [openPlansDetailsModal1, setOpenPlansDetailsModal1] = useState(false);
+  const [plnId, setplnId] = useState();
   const navigate = useNavigate();
    const [loadingStates, setLoadingStates] = useState({}); 
+   
 
   useEffect(() => {
     dispatch(getAllPlans({ page: currentPage, limit: pageSize }));
@@ -208,7 +211,7 @@ const PlansManagement = () => {
       minWidth: 120,
       cellRenderer: (params) => (
         <Button
-           onClick={() => handlePlanBadgeDetails(params?.data?.id)}
+           onClick={() => handlePlanDetails(params?.data?.id)}
           className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
         >
           Update
@@ -233,14 +236,14 @@ const PlansManagement = () => {
     [currentPage, pageSize]
   );
 
-  const handleAddPlanBadge = () => {
+  const handleAddPlans = () => {
     setOpenPlansModal(true);
     //dispatch(getPlans())
   };
 
-  const handlePlanBadgeDetails=(id)=>{
-    setOpenPlansDetailsModal(true)
-    setplId(id)
+  const handlePlanDetails=(id)=>{
+    setOpenPlansDetailsModal1(true)
+    setplnId(id)
     dispatch(getPlansDetails(id))
    // dispatch(getPlans())
   }
@@ -257,7 +260,7 @@ const PlansManagement = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold">Plan List</h2>
             <Button
-              onClick={() => handleAddPlanBadge()}
+              onClick={() => handleAddPlans()}
               className="bg-[#536EFF] hover:bg-[#E7E7FF] px-4 py-1 text-white hover:text-[#536EFF] text-base font-semibold flex justify-center items-center rounded-md"
             >
               <CgAdd className="text-[18px] mr-1" />
@@ -283,26 +286,24 @@ const PlansManagement = () => {
           </div>
         </div>
       </div>
-      {/* {
-        (openplanbadgeModal&&plans)&&(
-          <AddPlanBadgeModal
-          openplanbadgeModal={openplanbadgeModal}
-          setOpenPlanbadgeModal={setOpenPlanbadgeModal}
-          plans={plans}
+      {
+        openplansModal&&(
+          <AddPlansModal
+          openplansModal={openplansModal}
+          setOpenPlansModal={setOpenPlansModal}
           />
         )
       }
       {
-        (openPlanbadgeDetailsModal&&singlePlanbdge)&&(
-          <UpdatePlanBadgeModal
-          openPlanbadgeDetailsModal={openPlanbadgeDetailsModal}
-          setOpenPlanbadgeDetailsModal={setOpenPlanbadgeDetailsModal}
-          singlePlanbdge={singlePlanbdge}
-           plans={plans}
-           pId={pId}
+        openPlansDetailsModal1&&(
+          <UpdatePlanModal
+          openPlansDetailsModal1={openPlansDetailsModal1}
+          setOpenPlansDetailsModal1={setOpenPlansDetailsModal1}
+          plnId={plnId}
+          singlePlan={singlePlan}
           />
         )
-      } */}
+      }
     </div>
   );
 };
