@@ -7,7 +7,7 @@ import { logo, smallLogo } from '../../assets/images/images';
 
 import { AiFillSetting, AiFillTag, AiFillTags, AiOutlineDashboard, AiOutlineLogout, AiOutlineNotification, AiOutlineUser, BiLineChart, BiLineChartDown, BiUserCircle, BiUserPin, BsPersonWorkspace, BsViewStacked, FiHome, LiaListAlt, MdManageAccounts, MdOutlineShoppingCartCheckout, MdSpaceDashboard, MdViewStream, PiClipboardTextBold, RiCoupon2Fill, RiCouponLine, RxDashboard, SlBadge, TfiMenuAlt } from "../../assets/icons/index";
 import { FaCircle, FaFirstOrderAlt } from 'react-icons/fa';
-import { MdSportsKabaddi, MdFamilyRestroom, MdSchool, MdAdminPanelSettings, MdOutlineSubscriptions, MdSubscriptions, MdTopic, MdPayment, MdClass } from 'react-icons/md';
+import { MdSportsKabaddi, MdFamilyRestroom, MdSchool, MdAdminPanelSettings, MdOutlineSubscriptions, MdSubscriptions, MdTopic, MdPayment, MdClass, MdOutlineCategory } from 'react-icons/md';
 import userRoles from '../../pages/utils/userRoles';
 import { SiLevelsdotfyi } from "react-icons/si";
 import { RiSoundModuleFill } from 'react-icons/ri';
@@ -233,11 +233,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   {sidebarOpen ?
                     <>
-                      <LiaListAlt className='text-2xl' />
+                      <MdOutlineCategory className='text-2xl' />
                     </>
                     :
                     <>
-                      <LiaListAlt className='text-2xl' />
+                      <MdOutlineCategory className='text-2xl' />
                       Category Management
                     </>
                   }

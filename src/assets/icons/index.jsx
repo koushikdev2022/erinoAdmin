@@ -131,7 +131,10 @@ import { FaUserCircle } from "react-icons/fa";
 import { SlBadge } from "react-icons/sl";
 import { LiaListAlt } from "react-icons/lia";
 
+import { MdOutlineCategory } from "react-icons/md";
+
 export {
+  MdOutlineCategory,
   SlBadge,
   LiaListAlt,
   FaUserCircle,

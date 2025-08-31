@@ -13,7 +13,7 @@ import {
   TableHead,
   TableHeadCell,
   TableRow,
-  ToggleSwitch
+  ToggleSwitch,
 } from "flowbite-react";
 import { toast, ToastContainer } from "react-toastify";
 import { AgGridReact } from "ag-grid-react";
@@ -27,11 +27,14 @@ import { FiPhoneCall } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getPlanBadge, getPlanBatchDetails, getPlans, planBadgeActiveDeactive } from "../../Reducer/PlanbadgeSlice";
+import {
+  getPlanBadge,
+  getPlanBatchDetails,
+  getPlans,
+  planBadgeActiveDeactive,
+} from "../../Reducer/PlanbadgeSlice";
 import AddPlanBadgeModal from "./AddPlanBadgeModal";
 import UpdatePlanBadgeModal from "./UpdatePlanBadgeModal";
-
-
 
 const FlowbiteToggleSwitch = React.memo(
   ({ isActive, onToggle, isLoading, planId }) => {
@@ -81,15 +84,18 @@ const StatusCellRenderer = React.memo((props) => {
   );
 });
 const PlanBadgeManagement = () => {
-  const { planBadgeList, singlePlanbdge,plans } = useSelector((state) => state?.planBad);
+  const { planBadgeList, singlePlanbdge, plans } = useSelector(
+    (state) => state?.planBad
+  );
   const dispatch = useDispatch();
   const [openplanbadgeModal, setOpenPlanbadgeModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [openPlanbadgeDetailsModal, setOpenPlanbadgeDetailsModal] = useState(false);
+  const [openPlanbadgeDetailsModal, setOpenPlanbadgeDetailsModal] =
+    useState(false);
   const [pId, setpId] = useState();
   const navigate = useNavigate();
-   const [loadingStates, setLoadingStates] = useState({}); 
+  const [loadingStates, setLoadingStates] = useState({});
 
   useEffect(() => {
     dispatch(getPlanBadge({ page: currentPage, limit: pageSize }));
@@ -97,48 +103,50 @@ const PlanBadgeManagement = () => {
 
   console.log("planBadgeList", planBadgeList);
 
-   const handleStatusToggle = useCallback(
-      async (planId, newStatus) => {
-        try {
-          // Set loading state for this specific customer
-          setLoadingStates((prev) => ({ ...prev, [planId]: true }));
-  
-          const statusValue = newStatus ? 1 : 0; // Convert boolean to API expected format
-  
-          // Prepare the API payload
-          const payload = {
-            plan_badge_id: planId,
-            status: statusValue,
-          };
-  
-          // Dispatch the API call
-          const result = await dispatch(planBadgeActiveDeactive(payload)).unwrap();
-  
-          // Show success message
-          toast.success(
-            `Plan Badge ${newStatus ? "activated" : "deactivated"} successfully!`
-          );
-  
-          // Refresh the customer list to get updated data
-          dispatch(getPlanBadge({ page: currentPage, limit: pageSize }));
-        } catch (error) {
-          console.error("Error toggling Plan status:", error);
-          toast.error(
-            `Failed to ${
-              newStatus ? "activate" : "deactivate"
-            } Plan Badge. Please try again.`
-          );
-        } finally {
-          // Remove loading state for this customer
-          setLoadingStates((prev) => {
-            const newState = { ...prev };
-            delete newState[planId];
-            return newState;
-          });
-        }
-      },
-      [dispatch, currentPage, pageSize]
-    );
+  const handleStatusToggle = useCallback(
+    async (planId, newStatus) => {
+      try {
+        // Set loading state for this specific customer
+        setLoadingStates((prev) => ({ ...prev, [planId]: true }));
+
+        const statusValue = newStatus ? 1 : 0; // Convert boolean to API expected format
+
+        // Prepare the API payload
+        const payload = {
+          plan_badge_id: planId,
+          status: statusValue,
+        };
+
+        // Dispatch the API call
+        const result = await dispatch(
+          planBadgeActiveDeactive(payload)
+        ).unwrap();
+
+        // Show success message
+        toast.success(
+          `Plan Badge ${newStatus ? "activated" : "deactivated"} successfully!`
+        );
+
+        // Refresh the customer list to get updated data
+        dispatch(getPlanBadge({ page: currentPage, limit: pageSize }));
+      } catch (error) {
+        console.error("Error toggling Plan status:", error);
+        toast.error(
+          `Failed to ${
+            newStatus ? "activate" : "deactivate"
+          } Plan Badge. Please try again.`
+        );
+      } finally {
+        // Remove loading state for this customer
+        setLoadingStates((prev) => {
+          const newState = { ...prev };
+          delete newState[planId];
+          return newState;
+        });
+      }
+    },
+    [dispatch, currentPage, pageSize]
+  );
 
   const rowData = useMemo(() => {
     // Fixed: Check for planBadgeList.data instead of planBadgeList.res
@@ -160,60 +168,61 @@ const PlanBadgeManagement = () => {
     }));
   }, [planBadgeList]);
 
-  const columnDefs = useMemo(() => [
-     {
-    field: "batch_avatar",
-    headerName: "BADGE IMAGE",
-    minWidth: 120,
-    cellRenderer: (params) => {
-      if (!params.value) {
-        return <span className="text-gray-400">No Image</span>;
-      }
-      return (
-        <img
-          src={params.value}
-          alt="Badge"
-          className="w-12 h-12 object-cover rounded-full border"
-        />
-      );
-    },
-  },
-    {
-      field: "batch_name",
-      headerName: "BADGE NAME",
-      sortable: true,
-      filter: true,
-      minWidth: 150,
-    },
-    {
-      field: "plan_name",
-      headerName: "PLAN NAME",
-      sortable: true,
-      filter: true,
-      minWidth: 200,
-    },
-    {
-      field: "price",
-      headerName: "PRICE",
-      sortable: true,
-      filter: true,
-      minWidth: 150,
-    },
-    {
-      field: "currency",
-      headerName: "CURRENCY",
-      sortable: true,
-      filter: true,
-      minWidth: 120,
-    },
-    {
-      field: "frequency",
-      headerName: "FREQUENCY",
-      sortable: true,
-      filter: true,
-      minWidth: 150,
-    },
-    {
+  const columnDefs = useMemo(
+    () => [
+      {
+        field: "batch_avatar",
+        headerName: "BADGE IMAGE",
+        minWidth: 120,
+        cellRenderer: (params) => {
+          if (!params.value) {
+            return <span className="text-gray-400">No Image</span>;
+          }
+          return (
+            <img
+              src={params.value}
+              alt="Badge"
+              className="w-12 h-12 object-cover rounded-full border"
+            />
+          );
+        },
+      },
+      {
+        field: "batch_name",
+        headerName: "BADGE NAME",
+        sortable: true,
+        filter: true,
+        minWidth: 150,
+      },
+      {
+        field: "plan_name",
+        headerName: "PLAN NAME",
+        sortable: true,
+        filter: true,
+        minWidth: 200,
+      },
+      {
+        field: "price",
+        headerName: "PRICE",
+        sortable: true,
+        filter: true,
+        minWidth: 150,
+      },
+      {
+        field: "currency",
+        headerName: "CURRENCY",
+        sortable: true,
+        filter: true,
+        minWidth: 120,
+      },
+      {
+        field: "frequency",
+        headerName: "FREQUENCY",
+        sortable: true,
+        filter: true,
+        minWidth: 150,
+      },
+      {
         field: "status",
         minWidth: 150,
         headerName: "STATUS",
@@ -226,20 +235,22 @@ const PlanBadgeManagement = () => {
           loadingStates: loadingStates,
         },
       },
-    {
-      headerName: "ACTIONS",
-      field: "actions",
-      minWidth: 120,
-      cellRenderer: (params) => (
-        <Button
-           onClick={() => handlePlanBadgeDetails(params?.data?.id)}
-          className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
-        >
-          Update
-        </Button>
-      ),
-    },
-  ], []);
+      {
+        headerName: "ACTIONS",
+        field: "actions",
+        minWidth: 120,
+        cellRenderer: (params) => (
+          <Button
+            onClick={() => handlePlanBadgeDetails(params?.data?.id)}
+            className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
+          >
+            Update
+          </Button>
+        ),
+      },
+    ],
+    []
+  );
 
   const onPaginationChanged = useCallback(
     (params) => {
@@ -259,15 +270,15 @@ const PlanBadgeManagement = () => {
 
   const handleAddPlanBadge = () => {
     setOpenPlanbadgeModal(true);
-    dispatch(getPlans())
+    dispatch(getPlans());
   };
 
-  const handlePlanBadgeDetails=(id)=>{
-    setOpenPlanbadgeDetailsModal(true)
-    setpId(id)
-    dispatch(getPlanBatchDetails(id))
-    dispatch(getPlans())
-  }
+  const handlePlanBadgeDetails = (id) => {
+    setOpenPlanbadgeDetailsModal(true);
+    setpId(id);
+    dispatch(getPlanBatchDetails(id));
+    dispatch(getPlans());
+  };
 
   // Add debug logging
   console.log("rowData:", rowData);
@@ -277,7 +288,7 @@ const PlanBadgeManagement = () => {
     <div>
       <ToastContainer />
       <div className="wrapper_area my-0 mx-auto p-6 rounded-xl bg-white">
-        <div className="h-full lg:h-screen">
+        <div className="h-full lg:h-screen plan_badge_list">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold">Plan Badge List</h2>
             <Button
@@ -288,9 +299,8 @@ const PlanBadgeManagement = () => {
               Add Plan Badge
             </Button>
           </div>
-          
+
           {/* Debug information - remove this in production */}
-      
 
           <div
             className="ag-theme-alpine"
@@ -303,30 +313,27 @@ const PlanBadgeManagement = () => {
               paginationPageSize={pageSize}
               pagination={true} // Added pagination prop
               domLayout="normal" // Changed from autoHeight to normal
+              rowHeight={66}
             />
           </div>
         </div>
       </div>
-      {
-        (openplanbadgeModal&&plans)&&(
-          <AddPlanBadgeModal
+      {openplanbadgeModal && plans && (
+        <AddPlanBadgeModal
           openplanbadgeModal={openplanbadgeModal}
           setOpenPlanbadgeModal={setOpenPlanbadgeModal}
           plans={plans}
-          />
-        )
-      }
-      {
-        (openPlanbadgeDetailsModal&&singlePlanbdge)&&(
-          <UpdatePlanBadgeModal
+        />
+      )}
+      {openPlanbadgeDetailsModal && singlePlanbdge && (
+        <UpdatePlanBadgeModal
           openPlanbadgeDetailsModal={openPlanbadgeDetailsModal}
           setOpenPlanbadgeDetailsModal={setOpenPlanbadgeDetailsModal}
           singlePlanbdge={singlePlanbdge}
-           plans={plans}
-           pId={pId}
-          />
-        )
-      }
+          plans={plans}
+          pId={pId}
+        />
+      )}
     </div>
   );
 };

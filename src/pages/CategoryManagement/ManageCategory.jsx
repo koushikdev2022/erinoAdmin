@@ -13,7 +13,7 @@ import {
   TableHead,
   TableHeadCell,
   TableRow,
-  ToggleSwitch
+  ToggleSwitch,
 } from "flowbite-react";
 import { toast, ToastContainer } from "react-toastify";
 import { AgGridReact } from "ag-grid-react";
@@ -27,11 +27,15 @@ import { FiPhoneCall } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getPlans} from "../../Reducer/PlanbadgeSlice";
+import { getPlans } from "../../Reducer/PlanbadgeSlice";
 
 // import AddPlansModal from "./AddPlansModal";
 // import UpdatePlanModal from "./UpdatePlanModal";
-import { categoryActiveDeactive, getAllCategory, getCategoryDetails } from "../../Reducer/CategorySlice";
+import {
+  categoryActiveDeactive,
+  getAllCategory,
+  getCategoryDetails,
+} from "../../Reducer/CategorySlice";
 import AddCategoryModal from "./AddCategoryModal";
 import UpdateCategoryModal from "./UpdateCategoryModal";
 import ImageUpdateModal from "./ImageUpdateModal";
@@ -39,7 +43,7 @@ import ImageUpdateModal from "./ImageUpdateModal";
 // Image Cell Renderer Component
 const ImageCellRenderer = React.memo((props) => {
   const { value } = props;
-  
+
   if (!value) {
     return <span className="text-gray-400">No Image</span>;
   }
@@ -51,13 +55,13 @@ const ImageCellRenderer = React.memo((props) => {
         alt="Category Banner"
         className="w-12 h-12 object-cover rounded-lg border border-gray-200"
         onError={(e) => {
-          e.target.style.display = 'none';
-          e.target.nextSibling.style.display = 'block';
+          e.target.style.display = "none";
+          e.target.nextSibling.style.display = "block";
         }}
       />
-      <span 
+      <span
         className="text-gray-400 text-sm hidden"
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
       >
         Image not found
       </span>
@@ -112,16 +116,20 @@ const StatusCellRenderer = React.memo((props) => {
 });
 
 const ManageCategory = () => {
-  const { categoryList, singleCategory } = useSelector((state) => state?.cateMan);
+  const { categoryList, singleCategory } = useSelector(
+    (state) => state?.cateMan
+  );
   const dispatch = useDispatch();
   const [openCategoryModal, setOpenCategoryModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [openCategoryDetailsModal1, setOpenCategoryDetailsModal1] = useState(false);
-  const [openCategoryDetailsModal2, setOpenCategoryDetailsModal2] = useState(false);
+  const [openCategoryDetailsModal1, setOpenCategoryDetailsModal1] =
+    useState(false);
+  const [openCategoryDetailsModal2, setOpenCategoryDetailsModal2] =
+    useState(false);
   const [catId, setCatId] = useState();
   const navigate = useNavigate();
-  const [loadingStates, setLoadingStates] = useState({}); 
+  const [loadingStates, setLoadingStates] = useState({});
 
   useEffect(() => {
     dispatch(getAllCategory({ page: currentPage, limit: pageSize }));
@@ -186,59 +194,62 @@ const ManageCategory = () => {
     }));
   }, [categoryList]);
 
-  const columnDefs = useMemo(() => [
-    {
-      field: "banner",
-      headerName: "IMAGE",
-      sortable: false,
-      filter: false,
-      cellRenderer: ImageCellRenderer,
-    },
-    {
-      field: "cat_name",
-      headerName: "CATEGORY NAME",
-      sortable: true,
-      filter: true,
-    },
-    {
-      field: "status",
-      headerName: "STATUS",
-      sortable: false, // Disable sorting since we have interactive component
-      filter: false, // Disable filter since we have interactive component
-     
-      cellRenderer: StatusCellRenderer,
-      cellRendererParams: {
-        onStatusToggle: handleStatusToggle,
-        loadingStates: loadingStates,
+  const columnDefs = useMemo(
+    () => [
+      {
+        field: "banner",
+        headerName: "IMAGE",
+        sortable: false,
+        filter: false,
+        cellRenderer: ImageCellRenderer,
       },
-    },
-        {
-      headerName: "ACTIONS",
-      field: "actions",
-   
-      cellRenderer: (params) => (
-        <Button
-          onClick={() => handleCateImage(params?.data?.id)}
-          className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
-        >
-          Update Image
-        </Button>
-      ),
-    },
-    {
-      headerName: "ACTIONS",
-      field: "actions",
-      width: 120,
-      cellRenderer: (params) => (
-        <Button
-          onClick={() => handleCateDetails(params?.data?.id)}
-          className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
-        >
-          Update
-        </Button>
-      ),
-    },
-  ], [handleStatusToggle, loadingStates]);
+      {
+        field: "cat_name",
+        headerName: "CATEGORY NAME",
+        sortable: true,
+        filter: true,
+      },
+      {
+        field: "status",
+        headerName: "STATUS",
+        sortable: false, // Disable sorting since we have interactive component
+        filter: false, // Disable filter since we have interactive component
+
+        cellRenderer: StatusCellRenderer,
+        cellRendererParams: {
+          onStatusToggle: handleStatusToggle,
+          loadingStates: loadingStates,
+        },
+      },
+      {
+        headerName: "ACTIONS",
+        field: "actions",
+
+        cellRenderer: (params) => (
+          <Button
+            onClick={() => handleCateImage(params?.data?.id)}
+            className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
+          >
+            Update Image
+          </Button>
+        ),
+      },
+      {
+        headerName: "ACTIONS",
+        field: "actions",
+        width: 120,
+        cellRenderer: (params) => (
+          <Button
+            onClick={() => handleCateDetails(params?.data?.id)}
+            className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
+          >
+            Update
+          </Button>
+        ),
+      },
+    ],
+    [handleStatusToggle, loadingStates]
+  );
 
   const onPaginationChanged = useCallback(
     (params) => {
@@ -262,16 +273,15 @@ const ManageCategory = () => {
   };
 
   const handleCateDetails = (id) => {
-    setOpenCategoryDetailsModal1(true)
-    setCatId(id)
-    dispatch(getCategoryDetails(id))
-    
-  }
-  const handleCateImage=(id)=>{
-     setOpenCategoryDetailsModal2(true)
-    setCatId(id)
-    dispatch(getCategoryDetails(id))
-  }
+    setOpenCategoryDetailsModal1(true);
+    setCatId(id);
+    dispatch(getCategoryDetails(id));
+  };
+  const handleCateImage = (id) => {
+    setOpenCategoryDetailsModal2(true);
+    setCatId(id);
+    dispatch(getCategoryDetails(id));
+  };
 
   // Add debug logging
   console.log("rowData:", rowData);
@@ -304,39 +314,34 @@ const ManageCategory = () => {
               paginationPageSize={pageSize}
               pagination={true} // Added pagination prop
               domLayout="normal" // Changed from autoHeight to normal
+              rowHeight={66}
             />
           </div>
         </div>
       </div>
-      {
-        openCategoryModal && (
-          <AddCategoryModal
-            openCategoryModal={openCategoryModal}
-            setOpenCategoryModal={setOpenCategoryModal}
-          />
-        )
-      }
-      {
-        openCategoryDetailsModal1&&(
-          <UpdateCategoryModal
+      {openCategoryModal && (
+        <AddCategoryModal
+          openCategoryModal={openCategoryModal}
+          setOpenCategoryModal={setOpenCategoryModal}
+        />
+      )}
+      {openCategoryDetailsModal1 && (
+        <UpdateCategoryModal
           openCategoryDetailsModal1={openCategoryDetailsModal1}
           setOpenPlansDetailsModal1={setOpenCategoryDetailsModal1}
           catId={catId}
           singleCategory={singleCategory}
-          />
-        )
-      }
+        />
+      )}
 
-       {
-        setOpenCategoryDetailsModal2&&(
-          <ImageUpdateModal
+      {setOpenCategoryDetailsModal2 && (
+        <ImageUpdateModal
           openCategoryDetailsModal2={openCategoryDetailsModal2}
           setOpenPlansDetailsModal2={setOpenCategoryDetailsModal2}
           catId={catId}
           singleCategory={singleCategory}
-          />
-        )
-      }
+        />
+      )}
     </div>
   );
 };
