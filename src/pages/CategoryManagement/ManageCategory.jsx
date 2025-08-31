@@ -31,8 +31,10 @@ import { getPlans} from "../../Reducer/PlanbadgeSlice";
 
 // import AddPlansModal from "./AddPlansModal";
 // import UpdatePlanModal from "./UpdatePlanModal";
-import { categoryActiveDeactive, getAllCategory } from "../../Reducer/CategorySlice";
+import { categoryActiveDeactive, getAllCategory, getCategoryDetails } from "../../Reducer/CategorySlice";
 import AddCategoryModal from "./AddCategoryModal";
+import UpdateCategoryModal from "./UpdateCategoryModal";
+import ImageUpdateModal from "./ImageUpdateModal";
 
 // Image Cell Renderer Component
 const ImageCellRenderer = React.memo((props) => {
@@ -115,8 +117,9 @@ const ManageCategory = () => {
   const [openCategoryModal, setOpenCategoryModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [openPlansDetailsModal1, setOpenPlansDetailsModal1] = useState(false);
-  const [plnId, setplnId] = useState();
+  const [openCategoryDetailsModal1, setOpenCategoryDetailsModal1] = useState(false);
+  const [openCategoryDetailsModal2, setOpenCategoryDetailsModal2] = useState(false);
+  const [catId, setCatId] = useState();
   const navigate = useNavigate();
   const [loadingStates, setLoadingStates] = useState({}); 
 
@@ -189,7 +192,6 @@ const ManageCategory = () => {
       headerName: "IMAGE",
       sortable: false,
       filter: false,
-      width: 120,
       cellRenderer: ImageCellRenderer,
     },
     {
@@ -197,19 +199,31 @@ const ManageCategory = () => {
       headerName: "CATEGORY NAME",
       sortable: true,
       filter: true,
-      flex: 1,
     },
     {
       field: "status",
       headerName: "STATUS",
       sortable: false, // Disable sorting since we have interactive component
       filter: false, // Disable filter since we have interactive component
-      width: 120,
+     
       cellRenderer: StatusCellRenderer,
       cellRendererParams: {
         onStatusToggle: handleStatusToggle,
         loadingStates: loadingStates,
       },
+    },
+        {
+      headerName: "ACTIONS",
+      field: "actions",
+   
+      cellRenderer: (params) => (
+        <Button
+          onClick={() => handleCateImage(params?.data?.id)}
+          className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
+        >
+          Update Image
+        </Button>
+      ),
     },
     {
       headerName: "ACTIONS",
@@ -217,7 +231,7 @@ const ManageCategory = () => {
       width: 120,
       cellRenderer: (params) => (
         <Button
-          onClick={() => handlePlanDetails(params?.data?.id)}
+          onClick={() => handleCateDetails(params?.data?.id)}
           className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
         >
           Update
@@ -247,11 +261,16 @@ const ManageCategory = () => {
     //dispatch(getPlans())
   };
 
-  const handlePlanDetails = (id) => {
-    setOpenPlansDetailsModal1(true)
-    setplnId(id)
-    // dispatch(getPlansDetails(id))
-    // dispatch(getPlans())
+  const handleCateDetails = (id) => {
+    setOpenCategoryDetailsModal1(true)
+    setCatId(id)
+    dispatch(getCategoryDetails(id))
+    
+  }
+  const handleCateImage=(id)=>{
+     setOpenCategoryDetailsModal2(true)
+    setCatId(id)
+    dispatch(getCategoryDetails(id))
   }
 
   // Add debug logging
@@ -297,16 +316,27 @@ const ManageCategory = () => {
           />
         )
       }
-      {/* {
-        openPlansDetailsModal1&&(
-          <UpdatePlanModal
-          openPlansDetailsModal1={openPlansDetailsModal1}
-          setOpenPlansDetailsModal1={setOpenPlansDetailsModal1}
-          plnId={plnId}
-          singlePlan={singlePlan}
+      {
+        openCategoryDetailsModal1&&(
+          <UpdateCategoryModal
+          openCategoryDetailsModal1={openCategoryDetailsModal1}
+          setOpenPlansDetailsModal1={setOpenCategoryDetailsModal1}
+          catId={catId}
+          singleCategory={singleCategory}
           />
         )
-      } */}
+      }
+
+       {
+        setOpenCategoryDetailsModal2&&(
+          <ImageUpdateModal
+          openCategoryDetailsModal2={openCategoryDetailsModal2}
+          setOpenPlansDetailsModal2={setOpenCategoryDetailsModal2}
+          catId={catId}
+          singleCategory={singleCategory}
+          />
+        )
+      }
     </div>
   );
 };

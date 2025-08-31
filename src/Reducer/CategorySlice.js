@@ -73,12 +73,12 @@ export const categoryActiveDeactive=createAsyncThunk(
     }
 )
 
-export const getPlans=createAsyncThunk(
-    'getPlans',
-      async (_, { rejectWithValue }) => {
+export const updateBanner=createAsyncThunk(
+    'updateBanner',
+      async (user_input, { rejectWithValue }) => {
 
         try {
-            const response = await api.get(`admin/plan-badge-mange/plan-dropdown`);
+            const response = await api.patch(`admin/category-manage/change-banner`,user_input);
             if (response?.data?.status_code === 200) {
                 return response.data;
             } else {
@@ -122,6 +122,7 @@ const initialState={
     delCust:{},
     plans:[],
     addCateData:"",
+    imageData:""
 }
 
 const CategorySlice=createSlice(
@@ -167,15 +168,15 @@ const CategorySlice=createSlice(
                 state.loading=false
                 state.error=payload
             })
-            .addCase(getPlans.pending,(state)=>{
+            .addCase(updateBanner.pending,(state)=>{
                 state.loading=true
             })
-            .addCase(getPlans.fulfilled,(state,{payload})=>{
+            .addCase(updateBanner.fulfilled,(state,{payload})=>{
                 state.loading=false
-                state.plans=payload
+                state.imageData=payload
                 state.error=false
             })
-            .addCase(getPlans.rejected,(state,{payload})=>{
+            .addCase(updateBanner.rejected,(state,{payload})=>{
                 state.loading=false
                 state.error=payload
             })

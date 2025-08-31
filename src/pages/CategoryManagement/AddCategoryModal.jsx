@@ -52,7 +52,7 @@ const AddCategoryModal=({ openCategoryModal,
               <div className="flex gap-4">
                <div className="w-6/12">
                  <div className="mb-1 block">
-                   <Label value="Batch Name *" />
+                   <Label value="Category Name *" />
                  </div>
                  <TextInput type="text" placeholder="Enter Category Name" {...register("cat_name",{required:"Batch Name is required"})} />
                  {console.log(errors,"errors")
