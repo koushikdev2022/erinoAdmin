@@ -221,6 +221,29 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
 
+
+
+              
+                <li>
+                <NavLink
+                  to="/manage-category"
+                  className={`group relative flex items-center gap-2 rounded-sm px-4 py-2 ${sidebarOpen ? 'justify-center' : 'justify-start'} font-normal text-sm text-gray-600 duration-300 ease-in-out hover:bg-graydark mb-2 ${pathname.includes('customer-management') &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
+                >
+                  {sidebarOpen ?
+                    <>
+                      <LiaListAlt className='text-2xl' />
+                    </>
+                    :
+                    <>
+                      <LiaListAlt className='text-2xl' />
+                      Category Management
+                    </>
+                  }
+                </NavLink>
+              </li>
+
               {/* <li>
                 <NavLink
                   to="/manage-batch"

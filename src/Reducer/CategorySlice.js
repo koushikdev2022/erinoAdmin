@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../store/Api";
 
-export const getAllPlans=createAsyncThunk(
-    'getAllPlans',
+export const getAllCategory=createAsyncThunk(
+    'getAllCategory',
       async ({page,limit}, { rejectWithValue }) => {
 
         try {
-            const response = await api.get(`/admin/plan-mange/list?page=${page}&limit=${limit}`);
+            const response = await api.get(`/admin/category-manage/list?page=${page}&limit=${limit}`);
             if (response?.data?.status_code === 200) {
                 return response.data;
             } else {
@@ -19,12 +19,12 @@ export const getAllPlans=createAsyncThunk(
     }
 )
 
-export const getPlansDetails=createAsyncThunk(
-    'getPlansDetails',
+export const getCategoryDetails=createAsyncThunk(
+    'getCategoryDetails',
       async (user_input, { rejectWithValue }) => {
 
         try {
-            const response = await api.get(`/admin/plan-mange/details/${user_input}`);
+            const response = await api.get(`/admin/category-manage/detail/${user_input}`);
             if (response?.data?.status_code === 200) {
                 return response.data;
             } else {
@@ -37,12 +37,12 @@ export const getPlansDetails=createAsyncThunk(
     }
 )
 
-export const updatePlanDetails=createAsyncThunk(
-    'updatePlanDetails',
+export const updateCategoryDetails=createAsyncThunk(
+    'updateCategoryDetails',
       async (user_input, { rejectWithValue }) => {
 
         try {
-            const response = await api.put(`/admin/plan-mange/edit`,user_input);
+            const response = await api.put(`/admin/category-manage/edit`,user_input);
             if (response?.data?.status_code === 200) {
                 return response.data;
             } else {
@@ -55,12 +55,12 @@ export const updatePlanDetails=createAsyncThunk(
     }
 )
 
-export const planActiveDeactive=createAsyncThunk(
-    'planActiveDeactive',
+export const categoryActiveDeactive=createAsyncThunk(
+    'categoryActiveDeactive',
       async (user_input, { rejectWithValue }) => {
 
         try {
-            const response = await api.patch(`admin/plan-mange/activation`,user_input);
+            const response = await api.patch(`admin/category-manage/activation`,user_input);
             if (response?.data?.status_code === 200) {
                 return response.data;
             } else {
@@ -91,12 +91,12 @@ export const getPlans=createAsyncThunk(
     }
 )
 
-export const addPlans=createAsyncThunk(
-    'addPlans',
+export const addCategory=createAsyncThunk(
+    'addCategory',
       async (user_input, { rejectWithValue }) => {
 
         try {
-            const response = await api.post(`/admin/plan-mange/add`,user_input);
+            const response = await api.post(`/admin/category-manage/add`,user_input);
             if (response?.data?.status_code === 201) {
                 return response.data;
             } else {
@@ -114,56 +114,56 @@ export const addPlans=createAsyncThunk(
 
 const initialState={
     loading:false,
-    planList:[],
+    categoryList:[],
     error:false,
-    singlePlan:{},
+    singleCategory:{},
     errorSingle:false,
-    updatePlanData:{},
+    updateCateData:{},
     delCust:{},
     plans:[],
-    addPlanData:"",
+    addCateData:"",
 }
 
-const PlanManagementSlice=createSlice(
+const CategorySlice=createSlice(
     {
-        name:'planMan',
+        name:'cateMan',
         initialState,
         reducers:{},
         extraReducers:(builder)=>{
             builder
-            .addCase(getAllPlans.pending,(state)=>{
+            .addCase(getAllCategory.pending,(state)=>{
                 state.loading=true
             })
-            .addCase(getAllPlans.fulfilled,(state,{payload})=>{
+            .addCase(getAllCategory.fulfilled,(state,{payload})=>{
                 state.loading=false
-                state.planList=payload
+                state.categoryList=payload
                 state.error=false
             })
-            .addCase(getAllPlans.rejected,(state,{payload})=>{
+            .addCase(getAllCategory.rejected,(state,{payload})=>{
                 state.loading=false
                 state.error=payload
             })
-            .addCase(getPlansDetails.pending,(state)=>{
+            .addCase(getCategoryDetails.pending,(state)=>{
                 state.loading=true
             })
-            .addCase(getPlansDetails.fulfilled,(state,{payload})=>{
+            .addCase(getCategoryDetails.fulfilled,(state,{payload})=>{
                 state.loading=false
-                state.singlePlan=payload
+                state.singleCategory=payload
                 state.error=false
             })
-            .addCase(getPlansDetails.rejected,(state,{payload})=>{
+            .addCase(getCategoryDetails.rejected,(state,{payload})=>{
                 state.loading=false
                 state.errorSingle=payload
             })
-            .addCase(updatePlanDetails.pending,(state)=>{
+            .addCase(updateCategoryDetails.pending,(state)=>{
                 state.loading=true
             })
-            .addCase(updatePlanDetails.fulfilled,(state,{payload})=>{
+            .addCase(updateCategoryDetails.fulfilled,(state,{payload})=>{
                 state.loading=false
-                state.updatePlanData=payload
+                state.updateCateData=payload
                 state.error=false
             })
-            .addCase(updatePlanDetails.rejected,(state,{payload})=>{
+            .addCase(updateCategoryDetails.rejected,(state,{payload})=>{
                 state.loading=false
                 state.error=payload
             })
@@ -179,15 +179,15 @@ const PlanManagementSlice=createSlice(
                 state.loading=false
                 state.error=payload
             })
-            .addCase(addPlans.pending,(state)=>{
+            .addCase(addCategory.pending,(state)=>{
                 state.loading=true
             })
-            .addCase(addPlans.fulfilled,(state,{payload})=>{
+            .addCase(addCategory.fulfilled,(state,{payload})=>{
                 state.loading=false
-                state.addPlanData=payload
+                state.addCateData=payload
                 state.error=false
             })
-            .addCase(addPlans.rejected,(state,{payload})=>{
+            .addCase(addCategory.rejected,(state,{payload})=>{
                 state.loading=false
                 state.error=payload
             })
@@ -195,4 +195,4 @@ const PlanManagementSlice=createSlice(
         
     }
 )
-export default PlanManagementSlice.reducer
+export default CategorySlice.reducer
