@@ -1,4 +1,4 @@
-import { Button, Label, Modal, TextInput } from "flowbite-react";
+import { Button, Label, Modal, Select, TextInput } from "flowbite-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -65,9 +65,14 @@ dispatch(updatePlanDetails({...data,plan_id:plnId})).then((res)=>{
                                  <div className="mb-1 block">
                                    <Label value="Currency *" />
                                  </div>
-                                 <TextInput type="text" placeholder="Enter Currency" {...register("currency",{required:"Currency is required"})} />
+                                 {/* <TextInput type="text" placeholder="Enter Currency" {...register("currency",{required:"Currency is required"})} />
                                  {console.log(errors,"errors")
-                                 }
+                                 } */}
+                                  <Select {...register("currency",{required:"Currency is required"})}>
+                                                           <option value="">Select</option>
+                                                           <option value="INR">INR</option>
+                                                            <option value="USD">USD</option>
+                                                          </Select>
                                  {errors.currency && (
                    <p className="text-red-500 text-sm mt-1">{errors.currency.message}</p>
                  )}
@@ -92,9 +97,17 @@ dispatch(updatePlanDetails({...data,plan_id:plnId})).then((res)=>{
                                  <div className="mb-1 block">
                                    <Label value="Frequency*" />
                                  </div>
-                                 <TextInput type="text" placeholder="Enter Frequency" {...register("frequency",{required:"Frequency is required"})} />
+                                 {/* <TextInput type="text" placeholder="Enter Frequency" {...register("frequency",{required:"Frequency is required"})} />
                                  {console.log(errors,"errors")
-                                 }
+                                 } */}
+                                   <Select {...register("frequency",{required:"Frequency is required"})}>
+                                                           <option value="">Select</option>
+                                                           <option value="1">Monthly</option>
+                                                           <option value="3">Quarterly</option>
+                                                           <option value="6">Half-yearly</option> 
+                                                           <option value="12">Annually</option>
+                                 
+                                                          </Select>
                                  {errors.frequency && (
                    <p className="text-red-500 text-sm mt-1">{errors.frequency.message}</p>
                  )}
