@@ -34,6 +34,7 @@ import MarchentSlice from '../Reducer/MarchentSlice';
 import DashboardSliceNew from '../Reducer/DashboardSliceNew';
 import PlanbadgeSlice from '../Reducer/PlanbadgeSlice'
  import PlanManagementSlice from '../Reducer/PlanManagementSlice'
+ import CategorySlice from '../Reducer/CategorySlice'
 const store = configureStore({
   reducer: {
     auth: AuthSlice,
@@ -71,6 +72,7 @@ const store = configureStore({
     dashNew:DashboardSliceNew,
     planBad:PlanbadgeSlice,
     planMan:PlanManagementSlice,
+    cateMan:CategorySlice,
   },
   devTools: import.meta.env.DEV,
 });

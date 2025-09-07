@@ -27,24 +27,57 @@ import { FiPhoneCall } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { getPlans } from "../../Reducer/PlanbadgeSlice";
+
+// import AddPlansModal from "./AddPlansModal";
+// import UpdatePlanModal from "./UpdatePlanModal";
 import {
-  getPlanBadge,
-  getPlanBatchDetails,
-  getPlans,
-  planBadgeActiveDeactive,
-} from "../../Reducer/PlanbadgeSlice";
-import AddPlanBadgeModal from "./AddPlanBadgeModal";
-import UpdatePlanBadgeModal from "./UpdatePlanBadgeModal";
+  categoryActiveDeactive,
+  getAllCategory,
+  getCategoryDetails,
+} from "../../Reducer/CategorySlice";
+import AddCategoryModal from "./AddCategoryModal";
+import UpdateCategoryModal from "./UpdateCategoryModal";
+import ImageUpdateModal from "./ImageUpdateModal";
+
+// Image Cell Renderer Component
+const ImageCellRenderer = React.memo((props) => {
+  const { value } = props;
+
+  if (!value) {
+    return <span className="text-gray-400">No Image</span>;
+  }
+
+  return (
+    <div className="flex items-center justify-center py-2">
+      <img
+        src={value}
+        alt="Category Banner"
+        className="w-12 h-12 object-cover rounded-lg border border-gray-200"
+        onError={(e) => {
+          e.target.style.display = "none";
+          e.target.nextSibling.style.display = "block";
+        }}
+      />
+      <span
+        className="text-gray-400 text-sm hidden"
+        style={{ display: "none" }}
+      >
+        Image not found
+      </span>
+    </div>
+  );
+});
 
 const FlowbiteToggleSwitch = React.memo(
-  ({ isActive, onToggle, isLoading, planId }) => {
+  ({ isActive, onToggle, isLoading, cateId }) => {
     const handleToggle = useCallback(
       (checked) => {
         if (!isLoading) {
-          onToggle(planId, checked);
+          onToggle(cateId, checked);
         }
       },
-      [planId, onToggle, isLoading]
+      [cateId, onToggle, isLoading]
     );
 
     return (
@@ -62,13 +95,11 @@ const FlowbiteToggleSwitch = React.memo(
             </div>
           )}
         </div>
-        {/* <span className={`text-sm font-medium ${isActive ? 'text-green-600' : 'text-red-600'}`}>
-        {isActive ? 'Active' : 'Inactive'}
-      </span> */}
       </div>
     );
   }
 );
+
 const StatusCellRenderer = React.memo((props) => {
   const { data, onStatusToggle, loadingStates } = props;
   const isActive = data.status === "Active";
@@ -79,68 +110,67 @@ const StatusCellRenderer = React.memo((props) => {
       isActive={isActive}
       onToggle={onStatusToggle}
       isLoading={isLoading}
-      planId={data.id}
+      cateId={data.id}
     />
   );
 });
-const PlanBadgeManagement = () => {
-  const { planBadgeList, singlePlanbdge, plans } = useSelector(
-    (state) => state?.planBad
+
+const ManageCategory = () => {
+  const { categoryList, singleCategory } = useSelector(
+    (state) => state?.cateMan
   );
   const dispatch = useDispatch();
-  const [openplanbadgeModal, setOpenPlanbadgeModal] = useState(false);
+  const [openCategoryModal, setOpenCategoryModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [openPlanbadgeDetailsModal, setOpenPlanbadgeDetailsModal] =
+  const [openCategoryDetailsModal1, setOpenCategoryDetailsModal1] =
     useState(false);
-  const [pId, setpId] = useState();
+  const [openCategoryDetailsModal2, setOpenCategoryDetailsModal2] =
+    useState(false);
+  const [catId, setCatId] = useState();
   const navigate = useNavigate();
   const [loadingStates, setLoadingStates] = useState({});
 
   useEffect(() => {
-    dispatch(getPlanBadge({ page: currentPage, limit: pageSize }));
+    dispatch(getAllCategory({ page: currentPage, limit: pageSize }));
   }, [dispatch, currentPage, pageSize]);
 
-  console.log("planBadgeList", planBadgeList);
-
   const handleStatusToggle = useCallback(
-    async (planId, newStatus) => {
+    async (cateId, newStatus) => {
       try {
         // Set loading state for this specific customer
-        setLoadingStates((prev) => ({ ...prev, [planId]: true }));
+        setLoadingStates((prev) => ({ ...prev, [cateId]: true }));
 
         const statusValue = newStatus ? 1 : 0; // Convert boolean to API expected format
 
         // Prepare the API payload
         const payload = {
-          plan_badge_id: planId,
+          category_id: cateId,
           status: statusValue,
         };
 
         // Dispatch the API call
-        const result = await dispatch(
-          planBadgeActiveDeactive(payload)
-        ).unwrap();
+        const result = await dispatch(categoryActiveDeactive(payload)).unwrap();
 
         // Show success message
         toast.success(
-          `Plan Badge ${newStatus ? "activated" : "deactivated"} successfully!`
+          `Category ${newStatus ? "activated" : "deactivated"} successfully!`
         );
 
         // Refresh the customer list to get updated data
-        dispatch(getPlanBadge({ page: currentPage, limit: pageSize }));
+        dispatch(getAllCategory({ page: currentPage, limit: pageSize }));
       } catch (error) {
         console.error("Error toggling Plan status:", error);
         toast.error(
           `Failed to ${
             newStatus ? "activate" : "deactivate"
-          } Plan Badge. Please try again.`
+          } Category. Please try again.`
         );
       } finally {
         // Remove loading state for this customer
         setLoadingStates((prev) => {
           const newState = { ...prev };
-          delete newState[planId];
+          delete newState[cateId];
           return newState;
         });
       }
@@ -149,86 +179,42 @@ const PlanBadgeManagement = () => {
   );
 
   const rowData = useMemo(() => {
-    // Fixed: Check for planBadgeList.data instead of planBadgeList.res
-    if (!planBadgeList?.data || !Array.isArray(planBadgeList.data)) {
-      console.log("No plan badge data available or invalid format");
+    // Fixed: Check for categoryList.data instead of planBadgeList.res
+    if (!categoryList?.data || !Array.isArray(categoryList.data)) {
+      console.log("No Category data available or invalid format");
       return [];
     }
 
-    // Fixed: Use planBadgeList.data directly
-    return planBadgeList.data.map((mar) => ({
+    // Fixed: Use categoryList.data directly and include banner
+    return categoryList.data.map((mar) => ({
       id: mar?.id, // Ensure unique ID
-      batch_name: mar?.batch_name || "",
-      plan_name: mar?.Plan?.plan_name || "",
-      price: mar?.Plan?.price || "",
+      cat_name: mar?.cat_name,
+      banner: mar?.banner, // Add banner URL for image display
       status: mar?.status === 1 ? "Active" : "Inactive",
-      currency: mar?.Plan?.currency || "",
-      frequency: mar?.Plan?.frequency || "",
-      batch_avatar: mar?.batch_avatar || null,
     }));
-  }, [planBadgeList]);
+  }, [categoryList]);
 
   const columnDefs = useMemo(
     () => [
       {
-        field: "batch_avatar",
-        headerName: "BADGE IMAGE",
-        minWidth: 120,
-        cellRenderer: (params) => {
-          if (!params.value) {
-            return <span className="text-gray-400">No Image</span>;
-          }
-          return (
-            <img
-              src={params.value}
-              alt="Badge"
-              className="w-12 h-12 object-cover rounded-full border"
-            />
-          );
-        },
+        field: "banner",
+        headerName: "IMAGE",
+        sortable: false,
+        filter: false,
+        cellRenderer: ImageCellRenderer,
       },
       {
-        field: "batch_name",
-        headerName: "BADGE NAME",
+        field: "cat_name",
+        headerName: "CATEGORY NAME",
         sortable: true,
         filter: true,
-        minWidth: 150,
-      },
-      {
-        field: "plan_name",
-        headerName: "PLAN NAME",
-        sortable: true,
-        filter: true,
-        minWidth: 200,
-      },
-      {
-        field: "price",
-        headerName: "PRICE",
-        sortable: true,
-        filter: true,
-        minWidth: 150,
-      },
-      {
-        field: "currency",
-        headerName: "CURRENCY",
-        sortable: true,
-        filter: true,
-        minWidth: 120,
-      },
-      {
-        field: "frequency",
-        headerName: "FREQUENCY",
-        sortable: true,
-        filter: true,
-        minWidth: 150,
       },
       {
         field: "status",
-        minWidth: 150,
         headerName: "STATUS",
         sortable: false, // Disable sorting since we have interactive component
         filter: false, // Disable filter since we have interactive component
-        flex: 1,
+
         cellRenderer: StatusCellRenderer,
         cellRendererParams: {
           onStatusToggle: handleStatusToggle,
@@ -238,10 +224,23 @@ const PlanBadgeManagement = () => {
       {
         headerName: "ACTIONS",
         field: "actions",
-        minWidth: 120,
+
         cellRenderer: (params) => (
           <Button
-            onClick={() => handlePlanBadgeDetails(params?.data?.id)}
+            onClick={() => handleCateImage(params?.data?.id)}
+            className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
+          >
+            Update Image
+          </Button>
+        ),
+      },
+      {
+        headerName: "ACTIONS",
+        field: "actions",
+        width: 120,
+        cellRenderer: (params) => (
+          <Button
+            onClick={() => handleCateDetails(params?.data?.id)}
             className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
           >
             Update
@@ -249,7 +248,7 @@ const PlanBadgeManagement = () => {
         ),
       },
     ],
-    []
+    [handleStatusToggle, loadingStates]
   );
 
   const onPaginationChanged = useCallback(
@@ -268,16 +267,20 @@ const PlanBadgeManagement = () => {
     [currentPage, pageSize]
   );
 
-  const handleAddPlanBadge = () => {
-    setOpenPlanbadgeModal(true);
-    dispatch(getPlans());
+  const handleAddCate = () => {
+    setOpenCategoryModal(true);
+    //dispatch(getPlans())
   };
 
-  const handlePlanBadgeDetails = (id) => {
-    setOpenPlanbadgeDetailsModal(true);
-    setpId(id);
-    dispatch(getPlanBatchDetails(id));
-    dispatch(getPlans());
+  const handleCateDetails = (id) => {
+    setOpenCategoryDetailsModal1(true);
+    setCatId(id);
+    dispatch(getCategoryDetails(id));
+  };
+  const handleCateImage = (id) => {
+    setOpenCategoryDetailsModal2(true);
+    setCatId(id);
+    dispatch(getCategoryDetails(id));
   };
 
   // Add debug logging
@@ -288,19 +291,17 @@ const PlanBadgeManagement = () => {
     <div>
       <ToastContainer />
       <div className="wrapper_area my-0 mx-auto p-6 rounded-xl bg-white">
-        <div className="h-full lg:h-screen plan_badge_list">
+        <div className="h-full lg:h-screen">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold">Plan Badge List</h2>
+            <h2 className="text-2xl font-semibold">Category List</h2>
             <Button
-              onClick={() => handleAddPlanBadge()}
+              onClick={() => handleAddCate()}
               className="bg-[#536EFF] hover:bg-[#E7E7FF] px-4 py-1 text-white hover:text-[#536EFF] text-base font-semibold flex justify-center items-center rounded-md"
             >
               <CgAdd className="text-[18px] mr-1" />
-              Add Plan Badge
+              Add Category
             </Button>
           </div>
-
-          {/* Debug information - remove this in production */}
 
           <div
             className="ag-theme-alpine"
@@ -318,24 +319,31 @@ const PlanBadgeManagement = () => {
           </div>
         </div>
       </div>
-      {openplanbadgeModal && plans && (
-        <AddPlanBadgeModal
-          openplanbadgeModal={openplanbadgeModal}
-          setOpenPlanbadgeModal={setOpenPlanbadgeModal}
-          plans={plans}
+      {openCategoryModal && (
+        <AddCategoryModal
+          openCategoryModal={openCategoryModal}
+          setOpenCategoryModal={setOpenCategoryModal}
         />
       )}
-      {openPlanbadgeDetailsModal && singlePlanbdge && (
-        <UpdatePlanBadgeModal
-          openPlanbadgeDetailsModal={openPlanbadgeDetailsModal}
-          setOpenPlanbadgeDetailsModal={setOpenPlanbadgeDetailsModal}
-          singlePlanbdge={singlePlanbdge}
-          plans={plans}
-          pId={pId}
+      {openCategoryDetailsModal1 && (
+        <UpdateCategoryModal
+          openCategoryDetailsModal1={openCategoryDetailsModal1}
+          setOpenPlansDetailsModal1={setOpenCategoryDetailsModal1}
+          catId={catId}
+          singleCategory={singleCategory}
+        />
+      )}
+
+      {setOpenCategoryDetailsModal2 && (
+        <ImageUpdateModal
+          openCategoryDetailsModal2={openCategoryDetailsModal2}
+          setOpenPlansDetailsModal2={setOpenCategoryDetailsModal2}
+          catId={catId}
+          singleCategory={singleCategory}
         />
       )}
     </div>
   );
 };
 
-export default PlanBadgeManagement;
+export default ManageCategory;

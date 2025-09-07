@@ -1040,6 +1040,10 @@ iframe .p-PaymentMethodSelector {
   border: #536EFF 1px solid;
 }
 
+.plan_badge_list .ag-theme-alpine .ag-cell {
+  padding-top: 8px;
+}
+
 @media only screen and (max-width: 767px) {
   .header_area nav ul li a.active,
   .header_area nav ul li a:hover {
