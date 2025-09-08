@@ -12,6 +12,7 @@ import userRoles from '../../pages/utils/userRoles';
 import { SiLevelsdotfyi } from "react-icons/si";
 import { RiSoundModuleFill } from 'react-icons/ri';
 
+
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -224,7 +225,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
 
               
-                <li>
+              <li>
                 <NavLink
                   to="/manage-category"
                   className={`group relative flex items-center gap-2 rounded-sm px-4 py-2 ${sidebarOpen ? 'justify-center' : 'justify-start'} font-normal text-sm text-gray-600 duration-300 ease-in-out hover:bg-graydark mb-2 ${pathname.includes('customer-management') &&
@@ -239,6 +240,26 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <>
                       <MdOutlineCategory className='text-2xl' />
                       Category Management
+                    </>
+                  }
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/subscription-management"
+                  className={`group relative flex items-center gap-2 rounded-sm px-4 py-2 ${sidebarOpen ? 'justify-center' : 'justify-start'} font-normal text-sm text-gray-600 duration-300 ease-in-out hover:bg-graydark mb-2 ${pathname.includes('subscription-management') &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
+                >
+                  {sidebarOpen ?
+                    <>
+                      <MdSubscriptions className='text-2xl' />
+                    </>
+                    :
+                    <>
+                      <MdSubscriptions className='text-2xl' />
+                      Subscription
                     </>
                   }
                 </NavLink>

@@ -22,6 +22,7 @@ import CustomerManagement from '../pages/CustomerManagement/CustomerManagement.j
 import PlanBadgeManagement from '../pages/PlanBadgeManagement/PlanBadgeManagement.jsx';
 import PlansManagement from '../pages/PlansManagement/PlansManagement.jsx';
 import ManageCategory from '../pages/CategoryManagement/ManageCategory.jsx';
+import SubscriptionManagement from '../pages/SubscriptionManagement/SubscriptionManagement.jsx';
 
 const allRoutes = [
   {
@@ -143,6 +144,17 @@ const allRoutes = [
       {
         index: true,
         element: <Plans />,
+      },
+    ],
+  },
+
+  {
+    path: '/subscription-management',
+    element: <InsideLayout />,
+    children: [
+      {
+        index: true,
+        element: <SubscriptionManagement />,
       },
     ],
   },

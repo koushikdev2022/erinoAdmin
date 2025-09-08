@@ -35,6 +35,7 @@ import DashboardSliceNew from '../Reducer/DashboardSliceNew';
 import PlanbadgeSlice from '../Reducer/PlanbadgeSlice'
  import PlanManagementSlice from '../Reducer/PlanManagementSlice'
  import CategorySlice from '../Reducer/CategorySlice'
+ import SubscriptionSlice from "../Reducer/SubscriptionSlice"
 const store = configureStore({
   reducer: {
     auth: AuthSlice,
@@ -73,6 +74,7 @@ const store = configureStore({
     planBad:PlanbadgeSlice,
     planMan:PlanManagementSlice,
     cateMan:CategorySlice,
+    subs: SubscriptionSlice,
   },
   devTools: import.meta.env.DEV,
 });
