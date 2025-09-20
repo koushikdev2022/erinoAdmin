@@ -270,7 +270,7 @@ const SubscriptionManagement = () => {
       <div className="wrapper_area my-0 mx-auto p-6 rounded-xl bg-white">
         <div className="h-full lg:h-screen plan_badge_list">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold">Subscription List</h2>
+            <h2 className="text-2xl font-semibold">Subscription Coin List</h2>
             {/* <Button
               onClick={() => handleAddPlanBadge()}
               className="bg-[#536EFF] hover:bg-[#E7E7FF] px-4 py-1 text-white hover:text-[#536EFF] text-base font-semibold flex justify-center items-center rounded-md"

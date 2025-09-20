@@ -259,7 +259,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     :
                     <>
                       <MdSubscriptions className='text-2xl' />
-                      Subscription
+                      Set Subscription Coin
                     </>
                   }
                 </NavLink>
