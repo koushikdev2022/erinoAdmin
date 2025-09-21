@@ -110,12 +110,12 @@ export const getPlans=createAsyncThunk(
     }
 )
 
-export const addPlanBadge=createAsyncThunk(
-    'addPlanBadge',
+export const addSubscriptionToken=createAsyncThunk(
+    'addSubscriptionToken',
       async (user_input, { rejectWithValue }) => {
 
         try {
-            const response = await api.post(`/admin/plan-badge-mange/add`,user_input);
+            const response = await api.post(`/admin/subscription-token-manage/add`,user_input);
             if (response?.data?.status_code === 201) {
                 return response.data;
             } else {
@@ -140,7 +140,7 @@ const initialState={
     updatePlanBadgeData:{},
     delCust:{},
     plans:[],
-    addBadgeData:"",
+    addSubscriptionTokenData:"",
 }
 
 const SubscriptionSlice=createSlice(
@@ -198,15 +198,15 @@ const SubscriptionSlice=createSlice(
                 state.loading=false
                 state.error=payload
             })
-            .addCase(addPlanBadge.pending,(state)=>{
+            .addCase(addSubscriptionToken.pending,(state)=>{
                 state.loading=true
             })
-            .addCase(addPlanBadge.fulfilled,(state,{payload})=>{
+            .addCase(addSubscriptionToken.fulfilled,(state,{payload})=>{
                 state.loading=false
-                state.addBadgeData=payload
+                state.addSubscriptionTokenData=payload
                 state.error=false
             })
-            .addCase(addPlanBadge.rejected,(state,{payload})=>{
+            .addCase(addSubscriptionToken.rejected,(state,{payload})=>{
                 state.loading=false
                 state.error=payload
             })

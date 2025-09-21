@@ -35,6 +35,9 @@ import {
 } from "../../Reducer/PlanbadgeSlice";
 import { getSubscription } from "../../Reducer/SubscriptionSlice";
 
+console.log(getPlanBadge, "getPlanBadge 123 sss");
+console.log(getPlans, "getPlans 456");
+
 const FlowbiteToggleSwitch = React.memo(
   ({ isActive, onToggle, isLoading, planId }) => {
     const handleToggle = useCallback(
@@ -216,19 +219,19 @@ const SubscriptionManagement = () => {
           loadingStates: loadingStates,
         },
       },
-      // {
-      //   headerName: "ACTIONS",
-      //   field: "actions",
-      //   minWidth: 120,
-      //   cellRenderer: (params) => (
-      //     <Button
-      //       onClick={() => handlePlanBadgeDetails(params?.data?.id)}
-      //       className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
-      //     >
-      //       Update
-      //     </Button>
-      //   ),
-      // },
+      {
+        headerName: "ACTIONS",
+        field: "actions",
+        minWidth: 120,
+        cellRenderer: (params) => (
+          <Button
+            //onClick={() => handlePlanBadgeDetails(params?.data?.id)}
+            className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
+          >
+            Update
+          </Button>
+        ),
+      },
     ],
     []
   );
@@ -271,13 +274,13 @@ const SubscriptionManagement = () => {
         <div className="h-full lg:h-screen plan_badge_list">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold">Subscription Coin List</h2>
-            {/* <Button
-              onClick={() => handleAddPlanBadge()}
+            <Button
+              //onClick={() => handleAddPlanBadge()}
               className="bg-[#536EFF] hover:bg-[#E7E7FF] px-4 py-1 text-white hover:text-[#536EFF] text-base font-semibold flex justify-center items-center rounded-md"
             >
               <CgAdd className="text-[18px] mr-1" />
-              Add Plan Badge
-            </Button> */}
+              Add Subscription Coin
+            </Button>
           </div>
 
           {/* Debug information - remove this in production */}

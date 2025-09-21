@@ -33,9 +33,9 @@ import CustomerSlice from '../Reducer/CustomerSlice';
 import MarchentSlice from '../Reducer/MarchentSlice';
 import DashboardSliceNew from '../Reducer/DashboardSliceNew';
 import PlanbadgeSlice from '../Reducer/PlanbadgeSlice'
- import PlanManagementSlice from '../Reducer/PlanManagementSlice'
- import CategorySlice from '../Reducer/CategorySlice'
- import SubscriptionSlice from "../Reducer/SubscriptionSlice"
+import PlanManagementSlice from '../Reducer/PlanManagementSlice'
+import CategorySlice from '../Reducer/CategorySlice'
+import SubscriptionSlice from "../Reducer/SubscriptionSlice"
 const store = configureStore({
   reducer: {
     auth: AuthSlice,
