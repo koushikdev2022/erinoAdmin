@@ -33,7 +33,9 @@ import {
   getPlans,
   planBadgeActiveDeactive,
 } from "../../Reducer/PlanbadgeSlice";
-import { getSubscription } from "../../Reducer/SubscriptionSlice";
+import { getSubscription, getSubscriptionDetails } from "../../Reducer/SubscriptionSlice";
+import AddSubsModal from "./AddSubsModal";
+import UpdateSubModal from "./UpdateSubModal";
 
 console.log(getPlanBadge, "getPlanBadge 123 sss");
 console.log(getPlans, "getPlans 456");
@@ -87,16 +89,16 @@ const StatusCellRenderer = React.memo((props) => {
 });
 
 const SubscriptionManagement = () => {
-  const { subscriptionList } = useSelector((state) => state?.subs);
+  const { subscriptionList,singleSubs } = useSelector((state) => state?.subs);
   const dispatch = useDispatch();
-  const [openplanbadgeModal, setOpenPlanbadgeModal] = useState(false);
+  const [openSubsModal, setOpenSubsModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [openPlanbadgeDetailsModal, setOpenPlanbadgeDetailsModal] =
-    useState(false);
-  const [pId, setpId] = useState();
+  const [openSubsDetailsModal, setOpenSubsDetailsModal] =useState(false);
+  const [sId, setsId] = useState();
   const navigate = useNavigate();
   const [loadingStates, setLoadingStates] = useState({});
+  const[plnId,setPlnId]=useState()
 
   useEffect(() => {
     dispatch(getSubscription({ page: currentPage, limit: pageSize }));
@@ -161,6 +163,7 @@ const SubscriptionManagement = () => {
       id: mar?.id, // Ensure unique ID
       coin: mar?.coin || "",
       plan_name: mar?.Plan?.plan_name || "",
+      plan_id:mar?.Plan?.id,
       price: mar?.Plan?.price || "",
       status: mar?.status === 1 ? "Active" : "Inactive",
       currency: mar?.Plan?.currency || "",
@@ -225,10 +228,24 @@ const SubscriptionManagement = () => {
         minWidth: 120,
         cellRenderer: (params) => (
           <Button
-            //onClick={() => handlePlanBadgeDetails(params?.data?.id)}
+            onClick={() => handleSubsDetails(params?.data?.id)}
             className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
           >
             Update
+          </Button>
+        ),
+      },
+         {
+        headerName: "TOKENS",
+        field: "token",
+        minWidth: 120,
+        cellRenderer: (params) => (
+          
+          <Button
+            onClick={() => handleSubs(params?.data?.plan_id)}
+            className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
+          >
+            Add Subcription Token
           </Button>
         ),
       },
@@ -252,16 +269,17 @@ const SubscriptionManagement = () => {
     [currentPage, pageSize]
   );
 
-  const handleAddPlanBadge = () => {
-    setOpenPlanbadgeModal(true);
-    dispatch(getPlans());
+  const handleSubs = (id) => {
+    setOpenSubsModal(true);
+   // dispatch(getPlans());
+   setPlnId(id)
   };
 
-  const handlePlanBadgeDetails = (id) => {
-    setOpenPlanbadgeDetailsModal(true);
-    setpId(id);
-    dispatch(getPlanBatchDetails(id));
-    dispatch(getPlans());
+  const handleSubsDetails = (id) => {
+    setOpenSubsDetailsModal(true);
+    setsId(id);
+    dispatch(getSubscriptionDetails(id));
+    //dispatch(getPlans());
   };
 
   // Add debug logging
@@ -274,13 +292,13 @@ const SubscriptionManagement = () => {
         <div className="h-full lg:h-screen plan_badge_list">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold">Subscription Coin List</h2>
-            <Button
-              //onClick={() => handleAddPlanBadge()}
+            {/* <Button
+              onClick={() => handleSubs()}
               className="bg-[#536EFF] hover:bg-[#E7E7FF] px-4 py-1 text-white hover:text-[#536EFF] text-base font-semibold flex justify-center items-center rounded-md"
             >
               <CgAdd className="text-[18px] mr-1" />
               Add Subscription Coin
-            </Button>
+            </Button> */}
           </div>
 
           {/* Debug information - remove this in production */}
@@ -301,20 +319,21 @@ const SubscriptionManagement = () => {
           </div>
         </div>
       </div>
-      {openplanbadgeModal && plans && (
-        <AddPlanBadgeModal
-          openplanbadgeModal={openplanbadgeModal}
-          setOpenPlanbadgeModal={setOpenPlanbadgeModal}
-          plans={plans}
+      {openSubsModal  && (
+        <AddSubsModal
+          openSubsModal={openSubsModal}
+          setOpenSubsModal={setOpenSubsModal}
+          plnId={plnId}
+         
         />
       )}
-      {openPlanbadgeDetailsModal && singlePlanbdge && (
-        <UpdatePlanBadgeModal
-          openPlanbadgeDetailsModal={openPlanbadgeDetailsModal}
-          setOpenPlanbadgeDetailsModal={setOpenPlanbadgeDetailsModal}
-          singlePlanbdge={singlePlanbdge}
-          plans={plans}
-          pId={pId}
+      {openSubsDetailsModal && singleSubs && (
+        <UpdateSubModal
+          openSubsDetailsModal={openSubsDetailsModal}
+          setOpenSubsDetailsModal={setOpenSubsDetailsModal}
+          singleSubs={singleSubs}
+          // plans={plans}
+          sId={sId}
         />
       )}
     </div>

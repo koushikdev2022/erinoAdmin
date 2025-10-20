@@ -32,6 +32,7 @@ import { getPlans} from "../../Reducer/PlanbadgeSlice";
 import { getAllPlans, getPlansDetails, planActiveDeactive } from "../../Reducer/PlanManagementSlice";
 import AddPlansModal from "./AddPlansModal";
 import UpdatePlanModal from "./UpdatePlanModal";
+import AddSubsModal from "../SubscriptionManagement/AddSubsModal";
 
 
 
@@ -91,7 +92,9 @@ const PlansManagement = () => {
   const [openPlansDetailsModal1, setOpenPlansDetailsModal1] = useState(false);
   const [plnId, setplnId] = useState();
   const navigate = useNavigate();
-   const [loadingStates, setLoadingStates] = useState({}); 
+   const [loadingStates, setLoadingStates] = useState({});
+  const[openSubsModal,setOpenSubsModal]=useState(false)
+  
    
 
   useEffect(() => {
@@ -99,7 +102,13 @@ const PlansManagement = () => {
   }, [dispatch, currentPage, pageSize]);
 
   console.log("planList", planList);
-
+    const handleSubs = (id) => {
+      console.log("id",id);
+      
+    setOpenSubsModal(true);
+    setplnId(id)
+   // dispatch(getPlans());
+  };
    const handleStatusToggle = useCallback(
       async (planId, newStatus) => {
         try {
@@ -218,6 +227,19 @@ const PlansManagement = () => {
         </Button>
       ),
     },
+    // {
+    //   headerName: "Token",
+    //   field: "token",
+    //   minWidth: 120,
+    //   cellRenderer: (params) => (
+    //     <Button
+    //        onClick={() => handleSubs(params?.data?.id)}
+    //       className="border text-[#536EFF] border-[#536EFF] bg-white hover:bg-[#536EFF] hover:text-white text-xl px-4 py-0 my-1"
+    //     >
+    //       Add Subcription Token
+    //     </Button>
+    //   ),
+    // },
   ], []);
 
   const onPaginationChanged = useCallback(
@@ -291,6 +313,7 @@ const PlansManagement = () => {
           <AddPlansModal
           openplansModal={openplansModal}
           setOpenPlansModal={setOpenPlansModal}
+         
           />
         )
       }
@@ -304,6 +327,14 @@ const PlansManagement = () => {
           />
         )
       }
+         {openSubsModal  && (
+        <AddSubsModal
+          openSubsModal={openSubsModal}
+          setOpenSubsModal={setOpenSubsModal}
+           plnId={plnId}  
+         
+        />
+      )}
     </div>
   );
 };

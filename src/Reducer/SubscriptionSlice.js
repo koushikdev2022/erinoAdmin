@@ -19,12 +19,12 @@ export const getSubscription=createAsyncThunk(
     }
 )
 
-export const getPlanBatchDetails=createAsyncThunk(
-    'getPlanBatchDetails',
+export const getSubscriptionDetails=createAsyncThunk(
+    'getSubscriptionDetails',
       async (user_input, { rejectWithValue }) => {
 
         try {
-            const response = await api.get(`/admin/plan-badge-mange/detail/${user_input}`);
+            const response = await api.get(`/admin/subscription-token-manage/details/${user_input}`);
             if (response?.data?.status_code === 200) {
                 return response.data;
             } else {
@@ -37,12 +37,12 @@ export const getPlanBatchDetails=createAsyncThunk(
     }
 )
 
-export const updatePlanBadgeDetails=createAsyncThunk(
-    'updatePlanBadgeDetails',
+export const updateSubsDetails=createAsyncThunk(
+    'updateSubsDetails',
       async (user_input, { rejectWithValue }) => {
 
         try {
-            const response = await api.put(`/admin/plan-badge-mange/edit`,user_input);
+            const response = await api.put(`/admin/subscription-token-manage/edit`,user_input);
             if (response?.data?.status_code === 200) {
                 return response.data;
             } else {
@@ -135,9 +135,9 @@ const initialState={
     loading:false,
     subscriptionList:[],
     error:false,
-    singlePlanbdge:{},
+    singleSubs:{},
     errorSingle:false,
-    updatePlanBadgeData:{},
+    updateSubsData:{},
     delCust:{},
     plans:[],
     addSubscriptionTokenData:"",
@@ -162,27 +162,27 @@ const SubscriptionSlice=createSlice(
                 state.loading=false
                 state.error=payload
             })
-            .addCase(getPlanBatchDetails.pending,(state)=>{
+            .addCase(getSubscriptionDetails.pending,(state)=>{
                 state.loading=true
             })
-            .addCase(getPlanBatchDetails.fulfilled,(state,{payload})=>{
+            .addCase(getSubscriptionDetails.fulfilled,(state,{payload})=>{
                 state.loading=false
-                state.singlePlanbdge=payload
+                state.singleSubs=payload
                 state.error=false
             })
-            .addCase(getPlanBatchDetails.rejected,(state,{payload})=>{
+            .addCase(getSubscriptionDetails.rejected,(state,{payload})=>{
                 state.loading=false
                 state.errorSingle=payload
             })
-            .addCase(updatePlanBadgeDetails.pending,(state)=>{
+            .addCase(updateSubsDetails.pending,(state)=>{
                 state.loading=true
             })
-            .addCase(updatePlanBadgeDetails.fulfilled,(state,{payload})=>{
+            .addCase(updateSubsDetails.fulfilled,(state,{payload})=>{
                 state.loading=false
-                state.updatePlanBadgeData=payload
+                state.updateSubsData=payload
                 state.error=false
             })
-            .addCase(updatePlanBadgeDetails.rejected,(state,{payload})=>{
+            .addCase(updateSubsDetails.rejected,(state,{payload})=>{
                 state.loading=false
                 state.error=payload
             })

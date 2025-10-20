@@ -47,7 +47,7 @@ const AddPlansModal = ({ openplansModal, setOpenPlansModal }) => {
                     type="text"
                     placeholder="Enter Plan Name"
                     {...register("plan_name", {
-                      required: "Batch Name is required",
+                      required: "Plan Name is required",
                     })}
                   />
                   {console.log(errors, "errors")}
