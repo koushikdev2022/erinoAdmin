@@ -6,7 +6,7 @@ import SidebarLinkGroup from "../layout/SidebarLinkGroup";
 import { logo, smallLogo } from '../../assets/images/images';
 
 import { AiFillSetting, AiFillTag, AiFillTags, AiOutlineDashboard, AiOutlineLogout, AiOutlineNotification, AiOutlineUser, BiLineChart, BiLineChartDown, BiUserCircle, BiUserPin, BsPersonWorkspace, BsViewStacked, FiHome, LiaListAlt, MdManageAccounts, MdOutlineShoppingCartCheckout, MdSpaceDashboard, MdViewStream, PiClipboardTextBold, RiCoupon2Fill, RiCouponLine, RxDashboard, SlBadge, TfiMenuAlt } from "../../assets/icons/index";
-import { FaCircle, FaFirstOrderAlt } from 'react-icons/fa';
+import { FaCircle, FaCoins, FaFirstOrderAlt } from 'react-icons/fa';
 import { MdSportsKabaddi, MdFamilyRestroom, MdSchool, MdAdminPanelSettings, MdOutlineSubscriptions, MdSubscriptions, MdTopic, MdPayment, MdClass, MdOutlineCategory } from 'react-icons/md';
 import userRoles from '../../pages/utils/userRoles';
 import { SiLevelsdotfyi } from "react-icons/si";
@@ -265,25 +265,25 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
 
-              {/* <li>
+              <li>
                 <NavLink
-                  to="/manage-batch"
-                  className={`group relative flex items-center gap-2 rounded-sm px-4 py-2 ${sidebarOpen ? 'justify-center' : 'justify-start'} font-normal text-sm text-gray-600 duration-300 ease-in-out hover:bg-graydark mb-2 ${pathname.includes('manage-batch') &&
+                  to="/manage-coin"
+                  className={`group relative flex items-center gap-2 rounded-sm px-4 py-2 ${sidebarOpen ? 'justify-center' : 'justify-start'} font-normal text-sm text-gray-600 duration-300 ease-in-out hover:bg-graydark mb-2 ${pathname.includes('manage-coin') &&
                     'bg-graydark dark:bg-meta-4'
                     }`}
                 >
                   {sidebarOpen ?
                     <>
-                      <MdClass className='text-xl' />
+                      <FaCoins className='text-xl' />
                     </>
                     :
                     <>
-                      <MdClass className='text-xl' />
-                      Manage Batch
+                      <FaCoins className='text-xl' />
+                      Manage Coin
                     </>
                   }
                 </NavLink>
-              </li> */}
+              </li>
 
               {/* <li>
                 <NavLink
