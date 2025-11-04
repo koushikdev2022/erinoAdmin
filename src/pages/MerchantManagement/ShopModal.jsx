@@ -65,7 +65,7 @@ dispatch(getMarchentDetails({vendor_id:mId}))
                                         {shops?.gst_no}
                                       </TableCell>
                                       <TableCell className="py-2 text-[#697A8D]">
-                                        {shops?.shop_address}
+                                        {shops?.shop_address?.area},{shops?.shop_address?.street},{shops?.shop_address?.city},{shops?.shop_address?.state}
                                       </TableCell>
                                       <TableCell className="py-2 text-[#697A8D]">
                                         {shops?.zip}

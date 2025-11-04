@@ -72,7 +72,10 @@ dispatch(getMarchentDetails({vendor_id:mId}))
                         Address
                       </div>
                       <div className="text-sm text-[#2A2A3C] font-medium mb-2 w-6/12">
-                      {singleMarchent?.res?.[0]?.VendorShop?.[0]?.shop_address}
+                      {singleMarchent?.res?.[0]?.VendorShop?.[0]?.shop_address?.area},
+                       {singleMarchent?.res?.[0]?.VendorShop?.[0]?.shop_address?.street},
+                          {singleMarchent?.res?.[0]?.VendorShop?.[0]?.shop_address?.city},
+                           {singleMarchent?.res?.[0]?.VendorShop?.[0]?.shop_address?.state}
                       </div>
                     </div>
                     <div className="flex gap-4">
