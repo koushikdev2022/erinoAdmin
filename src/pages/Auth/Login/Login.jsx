@@ -80,9 +80,9 @@ const Login = () => {
   return (
     <div className="my-0 lg:my-0 mx-4 lg:mx-0 flex justify-center items-center wrapper_bg_area">
       <div className="w-full my-0 mx-auto login_area">
-        <div className="flex h-screen">
-          <div className="w-6/12 flex justify-center items-center">
-            <div className="w-7/12">
+        <div className="lg:flex h-screen">
+          <div className="lg:w-6/12 flex justify-center items-center">
+            <div className="lg:w-7/12 p-5">
               <div className="text-center mb-16">
                 <img
                   src={loginLogo}
@@ -122,7 +122,7 @@ const Login = () => {
                       </small>
                     )}
                   </div>
-                  <div className="mb-1">
+                  <div className="mb-8">
                     {/* <div className="flex justify-between">
                       <div className="block md:hidden">
                         <Link
@@ -150,7 +150,7 @@ const Login = () => {
                     )}
                   </div>
 
-                  <div className="flex justify-between mb-6">
+                  {/* <div className="flex justify-between mb-6">
                     <div className="flex items-center">
                       <div className="flex items-center gap-1">
                         <Checkbox id="remember" {...register("rememberMe")} />
@@ -170,7 +170,7 @@ const Login = () => {
                         Forgot Password?
                       </Link>
                     </div>
-                  </div>
+                  </div> */}
 
                   <button
                     type="submit"
@@ -211,7 +211,7 @@ const Login = () => {
             </div>
           </div>
           <div
-            className="w-6/12 bg-cover bg-no-repeat bg-right"
+            className="lg:w-6/12 bg-cover bg-no-repeat bg-right hidden lg:block"
             style={{ backgroundImage: `url("${LoginImg}")` }}
           >
             &nbsp;
