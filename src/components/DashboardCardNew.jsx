@@ -257,7 +257,7 @@ const DashboardCardNew = () => {
         </div>
       </div>
 
-      <AdminWalletBalance />
+      {/* <AdminWalletBalance /> */}
       <CustVendorGraph />
       {/* <div className="bg-white rounded-xl px-4 py-4">
         <div className="flex justify-between items-center mb-8">

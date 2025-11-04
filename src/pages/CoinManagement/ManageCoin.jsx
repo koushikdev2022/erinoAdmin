@@ -1,4 +1,3 @@
-
 // import { useEffect, useState } from "react"
 // import { useDispatch, useSelector } from "react-redux"
 // import { getCoinsLimitDetails } from "../../Reducer/CoinSlice"
@@ -58,9 +57,9 @@
 //               <div className="flex items-center justify-between mb-6">
 //                 <div className="flex-1">
 //                   <label className="block text-sm font-medium text-gray-700 mb-3">
-//                     Maximum Coin Usage Limit 
+//                     Maximum Coin Usage Limit
 //                   </label>
-                  
+
 //                   {isEditing ? (
 //                     <div className="flex items-center gap-3">
 //                       <input
@@ -158,71 +157,67 @@
 
 // export default ManageCoin
 
-
-
-
-
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { getCoinsLimitDetails, setLimitDetails } from "../../Reducer/CoinSlice"
-import { ToastContainer, toast } from "react-toastify"
-import { Button } from "flowbite-react"
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCoinsLimitDetails, setLimitDetails } from "../../Reducer/CoinSlice";
+import { ToastContainer, toast } from "react-toastify";
+import { Button } from "flowbite-react";
 
 const ManageCoin = () => {
-  const { limitCoins, loading } = useSelector((state) => state?.coins)
-  const dispatch = useDispatch()
-  const [isEditing, setIsEditing] = useState(false)
-  const [maxLimit, setMaxLimit] = useState("")
+  const { limitCoins, loading } = useSelector((state) => state?.coins);
+  const dispatch = useDispatch();
+  const [isEditing, setIsEditing] = useState(false);
+  const [maxLimit, setMaxLimit] = useState("");
 
   useEffect(() => {
-    dispatch(getCoinsLimitDetails())
-  }, [dispatch])
+    dispatch(getCoinsLimitDetails());
+  }, [dispatch]);
 
   useEffect(() => {
     if (limitCoins?.data?.coin_use_percent_max_limit) {
-      setMaxLimit(limitCoins.data.coin_use_percent_max_limit)
+      setMaxLimit(limitCoins.data.coin_use_percent_max_limit);
     }
-  }, [limitCoins])
+  }, [limitCoins]);
 
-  console.log("limitCoins", limitCoins)
+  console.log("limitCoins", limitCoins);
 
   const handleUpdate = () => {
-    setIsEditing(true)
-  }
+    setIsEditing(true);
+  };
 
   const handleSave = async () => {
     // Validation
     if (!maxLimit || maxLimit < 0 || maxLimit > 100) {
-      toast.error("Please enter a valid limit between 0 and 100")
-      return
+      toast.error("Please enter a valid limit between 0 and 100");
+      return;
     }
 
     try {
       const userInput = {
         id: limitCoins?.data?.id,
-        coin_use_percent_max_limit: Number(maxLimit)
-      }
+        coin_use_percent_max_limit: Number(maxLimit),
+      };
 
-      const response = await dispatch(setLimitDetails(userInput)).unwrap()
-      
+      const response = await dispatch(setLimitDetails(userInput)).unwrap();
+
       if (response?.status) {
-        toast.success(response?.message || "Coin limit updated successfully!")
-        setIsEditing(false)
+        toast.success(response?.message || "Coin limit updated successfully!");
+        setIsEditing(false);
         // Refresh the data
-        dispatch(getCoinsLimitDetails())
+        dispatch(getCoinsLimitDetails());
       } else {
-        toast.error(response?.message || "Failed to update coin limit")
+        toast.error(response?.message || "Failed to update coin limit");
       }
     } catch (error) {
-      console.error("Error updating coin limit:", error)
-      toast.error(error?.message || "Failed to update coin limit")
+      console.error("Error updating coin limit:", error);
+      toast.error(error?.message || "Failed to update coin limit");
     }
-  }
+  };
 
   const handleCancel = () => {
-    setMaxLimit(limitCoins?.data?.coin_use_percent_max_limit || "")
-    setIsEditing(false)
-  }
+    setMaxLimit(limitCoins?.data?.coin_use_percent_max_limit || "");
+    setIsEditing(false);
+  };
 
   return (
     <>
@@ -235,7 +230,8 @@ const ManageCoin = () => {
                 Maximum Use of Coins
               </h2>
               <p className="text-sm text-gray-500 mt-1">
-                Set the maximum percentage of coins that can be used per transaction
+                Set the maximum percentage of coins that can be used per
+                transaction
               </p>
             </div>
 
@@ -243,9 +239,9 @@ const ManageCoin = () => {
               <div className="flex items-center justify-between mb-6">
                 <div className="flex-1">
                   <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Maximum Coin Usage Limit 
+                    Maximum Coin Usage Limit
                   </label>
-                  
+
                   {isEditing ? (
                     <div className="flex items-center gap-3">
                       <input
@@ -332,14 +328,15 @@ const ManageCoin = () => {
 
             {limitCoins?.data?.updated_at && (
               <div className="mt-4 text-sm text-gray-500 text-center">
-                Last updated: {new Date(limitCoins.data.updated_at).toLocaleString()}
+                Last updated:{" "}
+                {new Date(limitCoins.data.updated_at).toLocaleString()}
               </div>
             )}
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ManageCoin
+export default ManageCoin;

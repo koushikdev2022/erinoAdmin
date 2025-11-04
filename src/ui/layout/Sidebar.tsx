@@ -279,7 +279,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     :
                     <>
                       <FaCoins className='text-xl' />
-                      Set Coin Limit
+                      Set User Coin Limit
                     </>
                   }
                 </NavLink>
