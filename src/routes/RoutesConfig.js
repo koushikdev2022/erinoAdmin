@@ -24,6 +24,7 @@ import PlansManagement from '../pages/PlansManagement/PlansManagement.jsx';
 import ManageCategory from '../pages/CategoryManagement/ManageCategory.jsx';
 import SubscriptionManagement from '../pages/SubscriptionManagement/SubscriptionManagement.jsx';
 import ManageCoin from '../pages/CoinManagement/ManageCoin.jsx';
+import ExpiryDate from '../pages/ExpiryDateManagement/ExpiryDate.jsx';
 
 const allRoutes = [
   {
@@ -177,6 +178,16 @@ const allRoutes = [
       {
         index: true,
         element: <ManageCoin />,
+      },
+    ],
+  },
+  {
+    path: '/manage-expiry-date',
+    element: <InsideLayout />,
+    children: [
+      {
+        index: true,
+        element: <ExpiryDate />,
       },
     ],
   },

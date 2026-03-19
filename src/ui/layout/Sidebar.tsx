@@ -7,6 +7,7 @@ import { logo, smallLogo } from '../../assets/images/images';
 
 import { AiFillSetting, AiFillTag, AiFillTags, AiOutlineDashboard, AiOutlineLogout, AiOutlineNotification, AiOutlineUser, BiLineChart, BiLineChartDown, BiUserCircle, BiUserPin, BsPersonWorkspace, BsViewStacked, FiHome, LiaListAlt, MdManageAccounts, MdOutlineShoppingCartCheckout, MdSpaceDashboard, MdViewStream, PiClipboardTextBold, RiCoupon2Fill, RiCouponLine, RxDashboard, SlBadge, TfiMenuAlt } from "../../assets/icons/index";
 import { FaCircle, FaCoins, FaFirstOrderAlt } from 'react-icons/fa';
+import { BsCalendarDate } from "react-icons/bs";
 import { MdSportsKabaddi, MdFamilyRestroom, MdSchool, MdAdminPanelSettings, MdOutlineSubscriptions, MdSubscriptions, MdTopic, MdPayment, MdClass, MdOutlineCategory } from 'react-icons/md';
 import userRoles from '../../pages/utils/userRoles';
 import { SiLevelsdotfyi } from "react-icons/si";
@@ -280,6 +281,26 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <>
                       <FaCoins className='text-xl' />
                       Set User Coin Limit
+                    </>
+                  }
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/manage-expiry-date"
+                  className={`group relative flex items-center gap-2 rounded-sm px-4 py-2 ${sidebarOpen ? 'justify-center' : 'justify-start'} font-normal text-sm text-gray-600 duration-300 ease-in-out hover:bg-graydark mb-2 ${pathname.includes('manage-coin') &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
+                >
+                  {sidebarOpen ?
+                    <>
+                      <BsCalendarDate className='text-xl' />
+                    </>
+                    :
+                    <>
+                      <BsCalendarDate className='text-xl' />
+                      Expiry Date
                     </>
                   }
                 </NavLink>
