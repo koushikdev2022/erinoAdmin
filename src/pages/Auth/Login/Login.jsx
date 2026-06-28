@@ -91,7 +91,7 @@ const Login = () => {
                 />
               </div>
               <h1 className="text-left font-semibold text-[38px] leading-[45px] text-black pb-4">
-                Login with <span className="text-[#536EFF]">EARNO</span>
+                Login with <span className="text-[#536EFF]">EARNONE</span>
               </h1>
               {/* <p className="text-[15px] text-[#8E8E8E]">
                 Lorem Ipsum is simply dummy text of the printing and typesetting

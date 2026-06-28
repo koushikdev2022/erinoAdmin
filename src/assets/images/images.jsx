@@ -1,4 +1,4 @@
-import logo from "../imagesource/logo.png";
+import logo from "../imagesource/logo.jpeg";
 import logoIcon from "../imagesource/logoIcon.png";
 import userIcon from "../imagesource/usericon.png";
 import forgotPasswordIcon from "../imagesource/forgatepassImg.png";
@@ -45,7 +45,7 @@ import listImg from "../imagesource/list_img.png";
 // import checkoutTempleteOne from "../imagesource/checkout_templete_01.png";
 // import checkoutTempleteTwofrom "../imagesource/checkout_templete_02.png";
 
-import smallLogo from "../imagesource/small_logo.png";
+import smallLogo from "../imagesource/small_logo.jpeg";
 
 import gCurve from "../imagesource/g_curve.png";
 import oCurve from "../imagesource/O_curve.png";
@@ -57,7 +57,7 @@ import EconomicIcon from "../imagesource/Economic_icon.png";
 
 import visaIcon from "../imagesource/visa_icon.png";
 
-import loginLogo from "../imagesource/login_logo.png";
+import loginLogo from "../imagesource/login_logo.jpeg";
 
 export {
   loginLogo,
